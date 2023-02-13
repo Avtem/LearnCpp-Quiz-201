@@ -35,11 +35,11 @@ code := ""
 includes := ""
 loop % editVal
 {
-	fileRead, txtStep, Step 0%a_index%.txt
+	fileRead, txtStep, Step 0%a_index%.cpp
 	includes .= extractIncludes(txtStep)
 	code .= txtStep
 }
-fileRead, txtTest, Testcode 0%editVal%.txt
+fileRead, txtTest, Testcode 0%editVal%.cpp
 includes .= extractIncludes(txtTest)
 trimIncludesAndRemoveDups(includes)
 clipboard := includes "`n" code "`n`n" txtTest
