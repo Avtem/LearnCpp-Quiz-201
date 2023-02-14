@@ -1,3 +1,7 @@
+#include <iostream>
+#include <assert.h>
+#include <algorithm>
+
 void printEmptyLines(int count)
 {
     for(int i = 0; i < count; i++)
