@@ -15,7 +15,7 @@ In order to generate code for a specific step (or entire quiz), run `Code genera
 
 **_Optional reading:_**\
 You can also do it manually, but it's a pain in the butt - that's why i created a program that does that for you. This is rather to help you understand what's going on under the hood.\
-Let's say you want the buildable code for step 3 in a quiz that has 4 steps in total. Here's what you have to do:\
+Let's say you want the buildable code for step 3 in a quiz that has 4 steps in total. Here's what you have to do:
 - copy and paste step 1 to your IDE
 - copy and paste step 2 to your IDE
 - copy and paste step 3 to your IDE
