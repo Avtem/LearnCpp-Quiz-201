@@ -11,7 +11,7 @@ i divide quiz into modules for several reasons:
 \*_(e.g. There is a quiz that consists of 4 steps. When you expand code block called "Solution for step 2" it does not contain the code from step 1 because it's irrelevant for step 2 and was already implemented. Unit-test code for step 2 (with main() function in it) is completely different from unit-test code for step 1. Thus, unit-test code does not test things from step 1)_
 
 ## How to get the code?
-In order to generate code for a specific step (or entire quiz), run `Code generator.ahk` and choose which step you would like to have code for. After clicking the button "Copy to clipboard" the entire code will be copied to your clipboard, and now you can paste it wherever you want!
+In order to generate code for a specific step (or entire quiz), download this repository as .zip (or just clone it) and run `Code generator.ahk` file. Choose which step you would like to have code for. After clicking the button "Copy to clipboard" the entire code will be copied to your clipboard, and now you can paste it wherever you want!
 
 **_Optional reading:_**\
 You can also do it manually, but it's a pain in the butt - that's why i created a program that does that for you. This is rather to help you understand what's going on under the hood.\
