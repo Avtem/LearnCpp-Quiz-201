@@ -1,6 +1,6 @@
 ## What is this?
-This is the source code for `Quiz 201 - 15 puzzle`.\
-You will not find here anything that will compile and build successfully. That is because the entire quiz is divided by modules - a single chunk of code (a file with .cpp extension) that user should write per step **or** a chunk of unit-test code provided by the teacher.
+This is the full source code for `Quiz 201 - 15 puzzle`.\
+asflksadjf
 
 i divide quiz into modules for several reasons:
 - It's easier to copy an isolated module code into your IDE
