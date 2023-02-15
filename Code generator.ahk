@@ -37,6 +37,7 @@ loop % editVal
 {
 	fileRead, txtStep, Step 0%a_index%.cpp
 	includes .= extractIncludes(txtStep)
+	;msgbox % a_index "`n" includes	;dbg
 	code .= txtStep
 }
 fileRead, txtTest, Testcode 0%editVal%.cpp
@@ -75,11 +76,10 @@ trimIncludesAndRemoveDups(ByRef includes)
 			arr.removeAt(i)
 	}
 	
-	Sort, arr, u
-	
 	str := ""
 	For i, value In arr
 		str .= value . "`n"
+	Sort, str, u
 	
 	includes := str
 }
