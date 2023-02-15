@@ -53,7 +53,8 @@ return
 extractIncludes(ByRef fileStr)
 {
 	includes := ""
-	pattern := "^#include.*?`r?`n`r?`n" ; match all #includes until an empty line found
+	fileStr := strReplace(fileStr, "`r`n", "`n")
+	pattern := "^#include.*?`n`n" ; match all #includes until an empty line found
 	pos := regexMatch(fileStr, pattern, includes)
 	if(pos)
 		fileStr := subStr(fileStr, strLen(includes)) ; erase includes from entire file
@@ -76,7 +77,8 @@ trimIncludesAndRemoveDups(ByRef includes)
 	
 	Sort, arr, u
 	
-	For Index, value In arr
+	str := ""
+	For i, value In arr
 		str .= value . "`n"
 	
 	includes := str
