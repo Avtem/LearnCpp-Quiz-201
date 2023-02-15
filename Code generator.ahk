@@ -1,11 +1,11 @@
 #singleInstance Force
 MAX_STEP_NR := 4
 
+Gui, Add, Text    , x16 y16 w120 h20, &Choose the step number:
 Gui, Add, Edit    , x156 y16 w70 h30 vedit -Multi +Number -VScroll +Vertical
 Gui, Add, UpDown  , x226 y16 w20 h30 range1-%MAX_STEP_NR%
-Gui, Add, Text    , x16 y16 w120 h20, Choose the step number:
-Gui, Add, CheckBox, x156 y46 w90 h30 gBoxEntireSol vBoxEntireSol, Entire solution
-Gui, Add, Button  , x16 y86 w230 h30 default ggenerate, Generate code and copy to clipboard
+Gui, Add, CheckBox, x156 y46 w90 h30 gBoxEntireSol vBoxEntireSol, &Entire solution
+Gui, Add, Button  , x16 y86 w230 h30 default ggenerate, &Generate code and copy to clipboard
 
 ; Generated using SmartGUI Creator 4.0
 Gui, Show, h139 w274, Code generator
