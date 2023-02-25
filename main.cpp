@@ -39,6 +39,7 @@ public:
         down,
         left,
         right,
+        COUNT,
     };
  
     explicit Direction(DirectionType type)
@@ -65,7 +66,13 @@ public:
         assert(0 && "Unsupported direction was passed!");
         return Direction{ up };
     }
- 
+
+    static Direction createRandom()
+    {
+        static std::mt19937 mt(std::random_device{}());
+        return Direction(DirectionType(mt() % DirectionType::COUNT));
+    }
+
 private:
     DirectionType m_type{};
  
@@ -261,17 +268,18 @@ public:
  
     void randomize()
     {
-        // Create a vector with enough room to hold all numbers in the Field
-        std::vector<int> seq(SIZE * SIZE);
-        // Genenerate an incremental sequence of numbers starting at 0
-        std::iota(seq.begin(), seq.end(), 0);
-        // Randomize that sequence
-        std::shuffle(seq.begin(), seq.end(), std::mt19937{ std::random_device{}() });
- 
-        // Set our tiles to those numbers
-        for (int y = 0, i = 0; y < SIZE; ++y)
-            for (int x = 0; x < SIZE; ++x, ++i)
-                m_tiles[y][x] = Tile(seq[i]);
+        // just move empty tile randomly 1000 times
+        // (just like you would do in real life)
+        for(int i=0; i < 1000; ++i)
+        {
+            Point pt0tile{getEmptyTilePos()};
+            Point ptAdj{pt0tile};
+            // if random direction lead us to nowhere, try again
+            while(pt0tile == ptAdj)
+                ptAdj = getAdjPoint(pt0tile, Direction::createRandom());
+
+            swapTiles(pt0tile, ptAdj);
+        }
     }
  
 private:
