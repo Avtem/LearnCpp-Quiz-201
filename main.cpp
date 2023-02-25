@@ -73,7 +73,7 @@ private:
  
 namespace UserInput
 {
-    static bool isValidCommand(char ch)
+    bool isValidCommand(char ch)
     {
         return ch == 'w'
             || ch == 'a'
@@ -160,7 +160,7 @@ public:
  
     void printEmptyLines(int count) const
     {
-        for (int i = 0; i < count; i++)
+        for(int i = 0; i < count; ++i)
             std::cout << '\n';
     }
  
@@ -175,9 +175,10 @@ public:
         // at the very bottom of the console
         printEmptyLines(25);
  
-        for (int y = 0, i = 0; y < SIZE; ++y)
+
+        for(int y = 0; y < SIZE; ++y)
         {
-            for (int x = 0; x < SIZE; ++x, ++i)
+            for(int x = 0; x < SIZE; ++x)
                 std::cout << m_tiles[y][x];
             std::cout << '\n';
         }
@@ -231,9 +232,9 @@ public:
     // Compare two fields to see if they are equal
     friend bool operator==(const Field& f1, const Field& f2)
     {
-        for (int y = 0, i = 1; y < SIZE; ++y)
-            for (int x = 0; x < SIZE; ++x, ++i)
-                if (f1.m_tiles[y][x].getNum() != f2.m_tiles[y][x].getNum())
+        for(int y = 0; y < SIZE; ++y)
+            for(int x = 0; x < SIZE; ++x)
+                if(f1.m_tiles[y][x].getNum() != f2.m_tiles[y][x].getNum())
                     return false;
  
         return true;
