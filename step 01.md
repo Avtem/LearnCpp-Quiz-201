@@ -1,3 +1,4 @@
+```cpp
 // implement class Point and the following members...
 
 struct Point
@@ -22,3 +23,4 @@ struct Point
         return {x - other.x, y - other.y};
     }
 };
+```
