@@ -6,6 +6,8 @@
 // DEPENDENCIES:
 // ... code from Step 02
 
+
+// Part I of Field class (Part II is implemented in Step 05):
 class Field
 {
 public:
