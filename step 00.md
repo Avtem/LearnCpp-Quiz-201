@@ -1,0 +1,1 @@
+// just explain to the reader what 15 puzzle is and how to play it.
