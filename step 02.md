@@ -1,3 +1,4 @@
+```cpp
 // implement class Tile and the following members...
 
 #include <iostream>
@@ -31,3 +32,4 @@ public:
 private:
     int m_num{};
 };
+```
