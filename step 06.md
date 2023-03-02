@@ -1,3 +1,4 @@
+```cpp
 // Implement main() which will handle all game logic.
 
 // DEPENDENCIES:
@@ -37,3 +38,4 @@ int main()
     std::cout << "\n\nYou won!\n\n";
     return 0;
 }
+```
