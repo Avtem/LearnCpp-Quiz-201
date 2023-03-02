@@ -7,6 +7,9 @@
 // ... code from Step 03
 // ... code from Step 04
 
+// Part II of Field class:
+// class Field
+// { ...
     Point getEmptyTilePos()
     {
         for(int y = 0; y < SIZE; ++y)
