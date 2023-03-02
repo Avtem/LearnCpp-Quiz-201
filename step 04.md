@@ -1,3 +1,4 @@
+```cpp
 // implement class Field and the following members... so that we can createSolvedField(), detect whether playerWon() and draw() the field to the screen.
 
 #include <iostream>
@@ -71,3 +72,4 @@ private:
     static const int SIZE = 4;
     Tile m_tiles[SIZE][SIZE]{};
 };
+```
