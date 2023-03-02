@@ -1,3 +1,4 @@
+```cpp
 // implement class Direction and the following members...
 // implement namespace UserInput which will contain the following functionality...
 
@@ -104,3 +105,4 @@ namespace UserInput
         return Direction{Direction::up};
     }
 };
+```
