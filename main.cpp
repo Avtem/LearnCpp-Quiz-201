@@ -2,7 +2,9 @@
 #include <cassert>
 #include <iostream>
 #include <numeric>
+#include <string>
 #include <random>
+#include <curses.h>
 
 struct Point
 {
@@ -86,24 +88,11 @@ namespace UserInput
             || ch == 'q';
     }
 
-    void ignoreLine()
-    {
-        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-    }
-
-    char getCharacter()
-    {
-        char operation{};
-        std::cin >> operation;
-        ignoreLine(); // remove any extraneous input
-        return operation;
-    }
-
     char getCommandFromUser()
     {
         char ch{};
         while (!isValidCommand(ch))
-            ch = getCharacter();
+            ch = getch();
 
         return ch;
     }
@@ -132,22 +121,23 @@ public:
     {
     }
 
-    friend std::ostream& operator<<(std::ostream& stream, Tile tile)
-    {
-        if (tile.m_num > 9) // if two digit number
-            stream << " " << tile.m_num << " ";
-        else if (tile.m_num > 0) // if one digit number
-            stream << "  " << tile.m_num << " ";
-        else if (tile.m_num == 0) // if empty spot
-            stream << "    ";
-        return stream;
-    }
     bool isEmpty() const
     {
         return m_num == 0;
     }
 
     int getNum() const { return m_num; }
+    std::string toString() const
+    {
+        if(m_num > 9) // if two digit number
+            return " " + std::to_string(m_num) + " ";
+        else if(m_num > 0) // if one digit number
+            return "  " + std::to_string(m_num) + " ";
+        else if(m_num == 0) // if empty spot
+            return "    ";
+        
+        return "";
+    }
 
 private:
     int m_num{};
@@ -170,22 +160,13 @@ public:
 
     void draw() const
     {
-        // Before drawing always print some empty lines
-        // so that only one field appears at a time
-        // and it's always shown at the bottom of the window
-        // because console window scrolls automatically when there is no
-        // enough space. 
-        // Increase amount of new lines if your field isn't
-        // at the very bottom of the console
-        printEmptyLines(25);
-
-
         for (int y = 0; y < SIZE; ++y)
         {
             for (int x = 0; x < SIZE; ++x)
-                std::cout << m_tiles[y][x];
-            std::cout << '\n';
+                mvaddstr(y, x *4, m_tiles[y][x].toString().c_str());
         }
+        refresh(); // mvaddstr() just puts a string into the SCREEN ARRAY
+        		   // In order to actually display the contents of that screen array, we call refresh()
     }
 
     Point getEmptyTilePos()
@@ -286,6 +267,10 @@ private:
 
 int main()
 {
+    initscr();       // Initialize PDcurses library
+    noecho();        // Do not display characters as user types them
+    curs_set(false); // Hide the blinking cursor that indicates current typing position
+
     Field field{};
     field.randomize();
     field.draw();
@@ -309,6 +294,10 @@ int main()
             field.draw();
     }
 
-    std::cout << "\n\nYou won!\n\n";
+    clear();   // Erase everything we had on the screen
+    mvaddstr(1, 1, "You win!");
+    refresh(); // Again, don't forget to refresh after manipulating screen array
+    getch();   // Wait for the user to press any key so they see "You win" message
+    endwin();  // Deinitialize of PDcurses library
     return 0;
 }
