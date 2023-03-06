@@ -131,7 +131,7 @@ class Tile
 {
 public:
     Tile() = default;
-    Tile(int number)
+    explicit Tile(int number)
         :m_num(number)
     {
     }
