@@ -2,7 +2,11 @@
 #include <cassert>
 #include <iostream>
 #include <numeric>
-#include <random>
+#include "Random.h"
+
+// Increase amount of new lines if your field isn't
+// at the very bottom of the console
+constexpr int g_consoleLines{ 25 };
 
 struct Point
 {
@@ -66,8 +70,8 @@ public:
 
     static Direction getRandomDirection()
     {
-        static std::mt19937 mt(std::random_device{}());
-        return Direction(Type(mt() % Type::max_directions));
+        Type random{ static_cast<Type>(Random::get(0, Type::max_directions - 1)) };
+        return Direction{ random };
     }
 
 private:
@@ -175,9 +179,7 @@ public:
         // and it's always shown at the bottom of the window
         // because console window scrolls automatically when there is no
         // enough space. 
-        // Increase amount of new lines if your field isn't
-        // at the very bottom of the console
-        printEmptyLines(25);
+        printEmptyLines(g_consoleLines);
 
 
         for (int y = 0; y < SIZE; ++y)
