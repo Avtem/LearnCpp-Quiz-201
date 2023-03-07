@@ -1,28 +1,37 @@
-The first class we are going to implement will be `Tile` class. Think about Tile objects as Tiles in a real game - they contain a number that they represent, they are visible to you (so we need to be able to print a Tile on the screen) and there is a lack of Tile - an empty spot in a real game, but in our program, we will still make it a Tile object that represents number `0`.
+The first class we are going to implement will be `Tile` class.  Each `Tile` will represent either one of the numbered tiles on our 4x4 grid, or the missing tile.  Each tile will store a single value, representing the value it displays.  Because we are not using `0` as a display value, we can use value `0` to identify our missing tile. 
 
-To summarize - you have to implement `class Tile` with this functionality:
-* Holding information about the number it represents
-* For our convenience let's add isEmpty() method which will return `true` if the tile is empty
-* Draw it to the screen using std::ostream<< operator overloading (Make sure you add some spacing around your numbers so that they don't stick together)
+Our `Tile` class should have this functionality:
+* A constructor that lets us create a Tile with a display value (or `0` for the missing tile).
+* A getNum() access function that returns the value held by the tile.
+* An isEmpty() member function that returns a bool indicating whether the current tile is the missing tile.
+* An overloaded `operator<<` that will display the value held by the tile.  So that tiles are aligned properly when printed in a grid, each tile will print 4 characters: one or two spaces, the display value, and then another space.
 
 The following code should compile and produce the output result you can see below the code:
 ```cpp
 int main()
 {
-    Tile tile1 {10};
-    Tile tile2 {8};
-    Tile tile3 {0}; // an empty tile
-    Tile tile4 {1};
+    Tile tile1{ 10 };
+    Tile tile2{ 8 };
+    Tile tile3{ 0 }; // the missing tile
+    Tile tile4{ 1 };
 
-    std::cout << tile1 << tile2 << tile3 << tile4;
+    std::cout << "0123456789ABCDEF\n"; // to make it easy to see how many spaces are in the next line
+    std::cout << tile1 << tile2 << tile3 << tile4 << '\n';
+    
+    std::cout << tile1.isEmpty() << tile3.isEmpty() << '\n';
+    std::cout << tile2.getNum() << tile4.getNum() << '\n';
+    
+    return 0;
 }
 ```
 
 Expected output (pay attention to the white spaces):
 ```text
- 10   8       1 
+0123456789ABCDEF
+ 10   8       1
+01
+81
 ```
-
 
 [solution]
 
@@ -58,5 +67,21 @@ public:
 private:
     int m_num{};
 };
+
+int main()
+{
+    Tile tile1{ 10 };
+    Tile tile2{ 8 };
+    Tile tile3{ 0 }; // the missing tile
+    Tile tile4{ 1 };
+
+    std::cout << "0123456789ABCDEF\n"; // to make it easy to see how many spaces are in the next line
+    std::cout << tile1 << tile2 << tile3 << tile4 << '\n';
+
+    std::cout << tile1.isEmpty() << tile3.isEmpty() << '\n';
+    std::cout << tile2.getNum() << tile4.getNum() << '\n';
+
+    return 0;
+}
 ```
 [/solution]
