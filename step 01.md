@@ -1,4 +1,4 @@
-The first class we are going to implement will be `Tile` class.  Each `Tile` will represent either one of the numbered tiles on our 4x4 grid, or the missing tile.  Each tile will store a single value, representing the value it displays.  Because we are not using `0` as a display value, we can use value `0` to identify our missing tile. 
+A) The first class we are going to implement will be `Tile` class.  Each `Tile` will represent either one of the numbered tiles on our 4x4 grid, or the missing tile.  Each tile will store a single value, representing the value it displays.  Because we are not using `0` as a display value, we can use value `0` to identify our missing tile. 
 
 Our `Tile` class should have this functionality:
 * A constructor that lets us create a Tile with a display value (or `0` for the missing tile).
