@@ -166,13 +166,13 @@ public:
         createSolvedField();
     }
 
-    void printEmptyLines(int count) const
+    static void printEmptyLines(int count)
     {
         for (int i = 0; i < count; ++i)
             std::cout << '\n';
     }
 
-    void draw() const
+    friend std::ostream& operator<<(std::ostream& stream, const Field &field)
     {
         // Before drawing always print some empty lines
         // so that only one field appears at a time
@@ -181,13 +181,14 @@ public:
         // enough space. 
         printEmptyLines(g_consoleLines);
 
-
         for (int y = 0; y < SIZE; ++y)
         {
             for (int x = 0; x < SIZE; ++x)
-                std::cout << m_tiles[y][x];
-            std::cout << '\n';
+                stream << field.m_tiles[y][x];
+            stream << '\n';
         }
+
+        return stream;
     }
 
     Point getEmptyTilePos()
@@ -290,7 +291,7 @@ int main()
 {
     Field field{};
     field.randomize();
-    field.draw();
+    std::cout << field;
 
     while (!field.playerWon())
     {
@@ -308,7 +309,7 @@ int main()
 
         bool userMoved = field.moveTiles(dir);
         if (userMoved)
-            field.draw();
+            std::cout << field;
     }
 
     std::cout << "\n\nYou won!\n\n";
