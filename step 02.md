@@ -100,7 +100,10 @@ class Field
 {
 public:
 
-    Field() = default;
+    Field()
+    {
+        makeSolved();
+    }
 
     static void printEmptyLines(int count)
     {
@@ -129,11 +132,22 @@ public:
 
 private:
     static constexpr int SIZE = 4;
-    Tile m_tiles[SIZE][SIZE]{
-        Tile{ 1 }, Tile { 2 }, Tile { 3 } , Tile { 4 },
-        Tile { 5 } , Tile { 6 }, Tile { 7 }, Tile { 8 },
-        Tile { 9 }, Tile { 10 }, Tile { 11 }, Tile { 12 },
-        Tile { 13 }, Tile { 14 }, Tile { 15 }, Tile { 0 } };
+    Tile m_tiles[SIZE][SIZE]{}; // Our array is row-based (i.e. m_tiles[y][x] where y is column index, x is row index)
+
+    void makeSolved()
+    {
+        // First we need to put numbers from 1 to 15:
+        for(int y=0, currNum = 1; y < SIZE; ++y)
+        {
+            for(int x = 0; x < SIZE; ++x, ++currNum)
+            {
+                m_tiles[y][x] = Tile(currNum);
+            }
+        }
+
+        // The last Tile should be an empty Tile:
+        m_tiles[SIZE -1][SIZE -1] = Tile(0);
+    }
 };
 
 int main()
