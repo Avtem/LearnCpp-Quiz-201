@@ -1,77 +1,88 @@
 ```cpp
-// implement class Field and the following members... so that we can createSolvedField(), detect whether playerWon() and draw() the field to the screen.
-
+#include <assert.h>
 #include <iostream>
 
-// DEPENDENCIES:
-// ... code from Step 02
-
-
-// Part I of Field class (Part II is implemented in Step 05):
-class Field
+class Direction
 {
 public:
-
-    Field()
+    enum Type
     {
-        createSolvedField();
+        up,
+        down,
+        left,
+        right,
+        max_directions,
+    };
+
+    explicit Direction(Type type)
+        :m_type(type)
+    {
     }
 
-    // create field that looks like 1,2,3,4,5,6 ... 14,15,0
-    void createSolvedField()
+    Direction operator-() const
     {
-        for(int y = 0, i = 1; y < SIZE; ++y)
-            for(int x = 0; x < SIZE; ++x, ++i)
-                m_tiles[y][x] = Tile(i);
-
-        // init empty cell
-        m_tiles[SIZE - 1][SIZE - 1] = Tile(0);
-    }
-
-    void draw() const
-    {
-        // Before drawing always print some empty lines
-        // so that only one field appears at a time
-        // and it's always shown at the bottom of the window
-        // because console window scrolls automatically when there is no
-        // enough space. 
-        // Increase amount of new lines if your field isn't
-        // at the very bottom of the console
-        printEmptyLines(25);
-
-        for(int y = 0; y < SIZE; ++y)
+        switch(m_type)
         {
-            for(int x = 0; x < SIZE; ++x)
-                std::cout << m_tiles[y][x];
-            std::cout << '\n';
+            case up:    return Direction{down};
+            case down:  return Direction{up};
+            case left:  return Direction{right};
+            case right: return Direction{left};
         }
-    }
 
-    // Compare two fields to see if they are equal
-    friend bool operator==(const Field& f1, const Field& f2)
-    {
-        for(int y = 0; y < SIZE; ++y)
-            for(int x = 0; x < SIZE; ++x)
-                if(f1.m_tiles[y][x].getNum() != f2.m_tiles[y][x].getNum())
-                    return false;
-
-        return true;
-    }
-
-    bool playerWon() const
-    {
-        static Field s_solved{};  // generate a solved field
-        return s_solved == *this; // player wins if current field == solved field
+        assert(0 && "Unsupported direction was passed!");
+        return Direction{up};
     }
 
 private:
-    void printEmptyLines(int count) const
+    Type m_type{};
+    
+};
+
+namespace UserInput
+{
+    bool isValidCommand(char ch)
     {
-        for(int i = 0; i < count; ++i)
-            std::cout << '\n';
+        return ch == 'w'
+            || ch == 'a'
+            || ch == 's'
+            || ch == 'd'
+            || ch == 'q';
     }
 
-    static const int SIZE = 4;
-    Tile m_tiles[SIZE][SIZE]{};
+    void ignoreLine()
+    {
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    }
+
+    char getCharacter()
+    {
+        char operation{};
+        std::cin >> operation;
+        ignoreLine(); // remove any extraneous input
+        return operation;
+    }
+
+    char getCommandFromUser()
+    {
+        char ch{};
+        while(!isValidCommand(ch))
+            ch = getCharacter();
+
+        return ch;
+    }
+
+    Direction charToDirection(char ch)
+    {
+        switch(ch)
+        {
+            case 'w': return Direction{Direction::up};
+            case 's': return Direction{Direction::down};
+            case 'a': return Direction{Direction::left};
+            case 'd': return Direction{Direction::right};
+        }
+
+        assert(0 && "Unsupported direction was passed!");
+        return Direction{Direction::up};
+    }
 };
 ```
