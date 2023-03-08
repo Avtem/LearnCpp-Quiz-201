@@ -1,16 +1,21 @@
-B) Next, we're going to implement the 4x4 grid of tiles.  We'll call this grid a `Field`.
+B) Next, we're going to implement the 4x4 grid of tiles that represents the puzzle.  By the end of this step, we'll be able to print our puzzle to the console.
 
-Create a class called Field, containing a 2-dimensional array of Tile.  Make sure the size of the grid is not a magic number (hint: store it in a constant).
+Create a class called `Field` that contains a 4x4 array of `Tile`.  Store the size of the grid in a (constexpr) symbolic constant, to avoid magic numbers, and in case we want to change the size later.
+
+When you buy a physical version of these puzzles, the puzzles typically start in the solved state -- you have to manually mix them up (by sliding tiles around) before trying to solve them.  So let's initialize our Field to the solved puzzle state.  We'll mix up the tiles in in a later step.
 
 The Field class should have the following functions:
-* A member function called `createSolvedField()` that overwrites the value of the Tile objects in the grid to those of a solved grid.
-* A default constructor that calls `createSolvedField()`.
-* An overloaded `operator<<` that first prints N blank lines, then prints the 4x4 grid of tiles.  The value of N should be defined as a global constant at the top of the program, and defaulted to value 25.
-
-// NOTES: createSolvedField() needs a better description.  N needs a better description.
+* A default constructor
+* An overloaded `operator<<` that first prints N blank lines, then prints the 4x4 grid of tiles.  Use `g_consoleLines` for the value of N (see sample code below for the definition of `g_consoleLines`).
 
 The following program should run:
 ```cpp
+// Increase amount of new lines if your field isn't
+// at the very bottom of the console
+constexpr int g_consoleLines{ 25 };
+
+// Your code goes here
+
 int main()
 {
     Field field{};
@@ -55,11 +60,7 @@ and output the following:
 
 [solution]
 ```cpp
-#include <array>
-#include <cassert>
 #include <iostream>
-#include <numeric>
-#include "Random.h"
 
 // Increase amount of new lines if your field isn't
 // at the very bottom of the console
@@ -99,12 +100,9 @@ class Field
 {
 public:
 
-    Field()
-    {
-        createSolvedField();
-    }
+    Field() = default;
 
-   static void printEmptyLines(int count)
+    static void printEmptyLines(int count)
     {
         for (int i = 0; i < count; ++i)
             std::cout << '\n';
@@ -129,20 +127,13 @@ public:
         return stream;
     }
 
-    // create field that looks like 1,2,3,4,5,6 ... 14,15,0
-    void createSolvedField()
-    {
-        for (int y = 0, i = 1; y < SIZE; ++y)
-            for (int x = 0; x < SIZE; ++x, ++i)
-                m_tiles[y][x] = Tile(i);
-
-        // init empty cell
-        m_tiles[SIZE - 1][SIZE - 1] = Tile(0);
-    }
-
 private:
-    static const int SIZE = 4;
-    Tile m_tiles[SIZE][SIZE]{};
+    static constexpr int SIZE = 4;
+    Tile m_tiles[SIZE][SIZE]{
+        Tile{ 1 }, Tile { 2 }, Tile { 3 } , Tile { 4 },
+        Tile { 5 } , Tile { 6 }, Tile { 7 }, Tile { 8 },
+        Tile { 9 }, Tile { 10 }, Tile { 11 }, Tile { 12 },
+        Tile { 13 }, Tile { 14 }, Tile { 15 }, Tile { 0 } };
 };
 
 int main()
