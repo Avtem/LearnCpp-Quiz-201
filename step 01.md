@@ -19,8 +19,8 @@ int main()
     std::cout << "0123456789ABCDEF\n"; // to make it easy to see how many spaces are in the next line
     std::cout << tile1 << tile2 << tile3 << tile4 << '\n';
     
-    std::cout << tile1.isEmpty() << tile3.isEmpty() << '\n';
-    std::cout << tile2.getNum() << tile4.getNum() << '\n';
+    std::cout << std::boolalpha << tile1.isEmpty() << ' ' << tile3.isEmpty() << '\n';
+    std::cout << "Tile 2 has number: " << tile2.getNum() << "\nTile 4 has number: " << tile4.getNum() << '\n';
     
     return 0;
 }
@@ -29,9 +29,10 @@ int main()
 Expected output (pay attention to the white spaces):
 ```text
 0123456789ABCDEF
- 10   8       1
-01
-81
+ 10   8       1 
+false true
+Tile 2 has number: 8
+Tile 4 has number: 1
 ```
 
 [solution]
@@ -79,8 +80,8 @@ int main()
     std::cout << "0123456789ABCDEF\n"; // to make it easy to see how many spaces are in the next line
     std::cout << tile1 << tile2 << tile3 << tile4 << '\n';
 
-    std::cout << tile1.isEmpty() << tile3.isEmpty() << '\n';
-    std::cout << tile2.getNum() << tile4.getNum() << '\n';
+    std::cout << std::boolalpha << tile1.isEmpty() << ' ' << tile3.isEmpty() << '\n';
+    std::cout << "Tile 2 has number: " << tile2.getNum() << "\nTile 4 has number: " << tile4.getNum() << '\n';
 
     return 0;
 }
