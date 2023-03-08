@@ -161,10 +161,7 @@ class Field
 {
 public:
 
-    Field()
-    {
-        createSolvedField();
-    }
+    Field() = default;
 
     static void printEmptyLines(int count)
     {
@@ -172,7 +169,7 @@ public:
             std::cout << '\n';
     }
 
-    friend std::ostream& operator<<(std::ostream& stream, const Field &field)
+    friend std::ostream& operator<<(std::ostream& stream, const Field& field)
     {
         // Before drawing always print some empty lines
         // so that only one field appears at a time
@@ -200,17 +197,6 @@ public:
 
         assert(0 && "There is no empty tile in the field!!!");
         return { -1,-1 };
-    }
-
-    // create field that looks like 1,2,3,4,5,6 ... 14,15,0
-    void createSolvedField()
-    {
-        for (int y = 0, i = 1; y < SIZE; ++y)
-            for (int x = 0; x < SIZE; ++x, ++i)
-                m_tiles[y][x] = Tile(i);
-
-        // init empty cell
-        m_tiles[SIZE - 1][SIZE - 1] = Tile(0);
     }
 
     static bool isValidTilePos(Point pt)
@@ -284,7 +270,10 @@ public:
 
 private:
     static const int SIZE = 4;
-    Tile m_tiles[SIZE][SIZE]{};
+    Tile m_tiles[SIZE][SIZE]{ Tile{ 1 }, Tile { 2 }, Tile { 3 } , Tile { 4 },
+        Tile { 5 } , Tile { 6 }, Tile { 7 }, Tile { 8 },
+        Tile { 9 }, Tile { 10 }, Tile { 11 }, Tile { 12 },
+        Tile { 13 }, Tile { 14 }, Tile { 15 }, Tile { 0 } };
 };
 
 int main()
