@@ -270,7 +270,8 @@ public:
 
 private:
     static const int SIZE = 4;
-    Tile m_tiles[SIZE][SIZE]{ Tile{ 1 }, Tile { 2 }, Tile { 3 } , Tile { 4 },
+    Tile m_tiles[SIZE][SIZE] { 
+        Tile{ 1 }, Tile { 2 }, Tile { 3 } , Tile { 4 },
         Tile { 5 } , Tile { 6 }, Tile { 7 }, Tile { 8 },
         Tile { 9 }, Tile { 10 }, Tile { 11 }, Tile { 12 },
         Tile { 13 }, Tile { 14 }, Tile { 15 }, Tile { 0 } };
