@@ -1,62 +1,83 @@
+C) Next, we need some way for the user to input commands, so that we can work towards our next goal of being able to slide the puzzle Tiles around.
+
+Our game will support 5 commands, each of which will be input as a single character:
+* 'w' - slide tile up
+* 'a' - slide tiles left
+* 's' - slide tile down
+* 'd' - slide tile right
+* 'q' - quit game
+
+To keep all of our input routines together, we'll put them in a namespace named `UserInput`.
+
+Implement the `UserInput` namespace:
+* Create a function named `getCommandFromUser()`.  Read in a single character from the user.  If the character is not a valid game command, clear any additional extraneous input, and read in another character from the user.  Repeat until a valid game command is entered.  Return the valid command to the caller.  
+* Create as many helper functions as you need.
+
+Update the `main()` function from the prior example, so that it does the following:
+* Prints the solved field
+* Repeatedly accepts game commands
+* If the user inputs `q`, print "\n\nBye!\n\n" and quit the app.
+* If the user inputs any other valid game command, print "Valid command: " and the character the user input.
+
+The output of the program should match the following:
+
+```text
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  1   2   3   4
+  5   6   7   8
+  9  10  11  12
+ 13  14  15
+w
+Valid command: w
+a
+Valid command: a
+s
+Valid command: s
+d
+Valid command: d
+f
+g
+h
+q
+
+
+Bye!
+
+
+```
+
+[solution]
 ```cpp
-// implement class Direction and the following members...
-// implement namespace UserInput which will contain the following functionality...
-
 #include <iostream>
-#include <array>
-#include <random>
-#include <assert.h>
+#include <numeric>
 
-// DEPENDENCIES:
-// ... code from Step 01
-
-class Direction
-{
-public:
-    enum Type
-    {
-        up,
-        down,
-        left,
-        right,
-        max_directions,
-    };
-
-    explicit Direction(Type type)
-        :m_type(type)
-    {
-    }
-
-    explicit operator Point() const
-    {
-        static const std::array<Point, 4> dirs{{ {0,-1}, {0,1}, {-1,0}, {1,0} }};
-        return dirs[m_type];
-    }
-
-    Direction operator-() const
-    {
-        switch(m_type)
-        {
-            case up:    return Direction{down};
-            case down:  return Direction{up};
-            case left:  return Direction{right};
-            case right: return Direction{left};
-        }
-
-        assert(0 && "Unsupported direction was passed!");
-        return Direction{up};
-    }
-
-    static Direction getRandomDirection()
-    {
-        static std::mt19937 mt(std::random_device{}());
-        return Direction(Type(mt() % Type::max_directions));
-    }
-
-private:
-    Type m_type{};
-
-};
+// Increase amount of new lines if your field isn't
+// at the very bottom of the console
+constexpr int g_consoleLines{ 25 };
 
 namespace UserInput
 {
@@ -84,25 +105,104 @@ namespace UserInput
 
     char getCommandFromUser()
     {
-        char ch{}; 
-        while(!isValidCommand(ch))
+        char ch{};
+        while (!isValidCommand(ch))
             ch = getCharacter();
 
         return ch;
     }
 
-    Direction charToDirection(char ch)
+};
+
+class Tile
+{
+public:
+    Tile() = default;
+    explicit Tile(int number)
+        :m_num(number)
     {
-        switch(ch)
+    }
+
+    friend std::ostream& operator<<(std::ostream& stream, Tile tile)
+    {
+        if (tile.m_num > 9) // if two digit number
+            stream << " " << tile.m_num << " ";
+        else if (tile.m_num > 0) // if one digit number
+            stream << "  " << tile.m_num << " ";
+        else if (tile.m_num == 0) // if empty spot
+            stream << "    ";
+        return stream;
+    }
+    bool isEmpty() const
+    {
+        return m_num == 0;
+    }
+
+    int getNum() const { return m_num; }
+
+private:
+    int m_num{};
+};
+
+class Field
+{
+public:
+
+    Field() = default;
+
+    static void printEmptyLines(int count)
+    {
+        for (int i = 0; i < count; ++i)
+            std::cout << '\n';
+    }
+
+    friend std::ostream& operator<<(std::ostream& stream, const Field& field)
+    {
+        // Before drawing always print some empty lines
+        // so that only one field appears at a time
+        // and it's always shown at the bottom of the window
+        // because console window scrolls automatically when there is no
+        // enough space. 
+        printEmptyLines(g_consoleLines);
+
+        for (int y = 0; y < SIZE; ++y)
         {
-            case 'w': return Direction{Direction::up};
-            case 's': return Direction{Direction::down};
-            case 'a': return Direction{Direction::left};
-            case 'd': return Direction{Direction::right};
+            for (int x = 0; x < SIZE; ++x)
+                stream << field.m_tiles[y][x];
+            stream << '\n';
         }
 
-        assert(0 && "Unsupported direction was passed!");
-        return Direction{Direction::up};
+        return stream;
     }
+
+private:
+    static const int SIZE = 4;
+    Tile m_tiles[SIZE][SIZE] {
+        Tile{ 1 }, Tile { 2 }, Tile { 3 } , Tile { 4 },
+        Tile { 5 } , Tile { 6 }, Tile { 7 }, Tile { 8 },
+        Tile { 9 }, Tile { 10 }, Tile { 11 }, Tile { 12 },
+        Tile { 13 }, Tile { 14 }, Tile { 15 }, Tile { 0 } };
 };
+
+int main()
+{
+    Field field{};
+    std::cout << field;
+
+    while (true)
+    {
+        char ch{ UserInput::getCommandFromUser() };
+
+        if (ch == 'q')
+        {
+            std::cout << "\n\nBye!\n\n";
+            return 0;
+        }
+
+        std::cout << "Valid command: " << ch << '\n';
+    }
+
+    return 0;
+}
 ```
+[/solution]
