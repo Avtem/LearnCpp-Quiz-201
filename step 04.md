@@ -1,75 +1,57 @@
-D) So now we are getting closer to manipulating the field by user! Right now we can accept commands from the user, but characters `'w', 'a', 's', 'd'` are just numbers of `char` type, so let's implement class `Direction` which will help us to process UserInput and any movement in the field.
+D) After implementing the prior step, we can accept commands from the user (as characters 'w', 'a', 's', 'd', and 'q').  These characters are essentially magic numbers in our code.  While it's fine to handle these commands in our `UserInput` namespace and function `main()`, we don't want to propagate them throughout our whole program.  For example, the `Field` class should have no knowledge of what 's' means.
 
-Implement the class Direction, which has:
-* Enum Type with values up, down, left, right and max direction count
-* A member field of type `Type` defined above that stores the actual direction
-* A constructor which takes one argument of type `Type`
-* `operator-` which will return the opposite direction, but as a new Direction object
-* In UserInput:: namespace add a function that will convert a character (command) to a Direction object
+Instead, we're going to implement a helper class named `Direction`, which will allow us to create objects that represent the cardinal directions (up, left, down, or right).
 
-The following program should run:
-```cpp
-#include <iostream>
-#include <assert.h>
+Implement the class `Direction`, which has:
+* A public nested enum named `Type` with enumerators `up`, `down`, `left`, `right`, and `max_directions` (we'll use this last one later).
+* A private member that stores the actual direction
+* A single argument constructor which allows us to initialize a `Direction` with a `Type` initializer.
+* An overloaded `operator-`, which takes a Direction and returns the opposite Direction.
+* An overloaded `operator<<`, which outputs the Direction name to the console.
 
-// Your code goes here
+Also, in the `UserInput` namespace, add the following:
+* A function that will convert a command (character) to a Direction object.
 
+Finally, modify the program you wrote in the prior step so that the output matches the following:
 
-// Note: this function is for single use. You can delete it after testing your code
-std::string_view directionToStr(Direction dir)
-{
-    switch(dir.getType())
-    {
-        case Direction::up:     return "up";
-        case Direction::down:   return "down";
-        case Direction::left:   return "left";
-        case Direction::right:  return "right";
-    }
-    assert(0 && "Unsupported direction was passed!");
-    return "?";
-}
-
-int main()
-{
-    std::cout << "Please enter one of the following:\n"
-        << "- a valid direction\n"
-        << "- an invalid command\n"
-        << "- the quit command\n";
-
-    while(true)
-    {
-        char ch{UserInput::getCommandFromUser()};
-
-        if(ch == 'q')
-        {
-            std::cout << "\n\nBye!\n\n";
-            return 0;
-        }
-
-        std::cout << "You entered direction: "
-                  << directionToStr(UserInput::charToDirection(ch)) << '\n';
-    }
-
-    return 0;
-}
-```
-and output the following:
 ```text
-Please enter one of the following:
-- a valid direction
-- an invalid command
-- the quit command
-f
-r
-e
-d
-You entered direction: right
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  1   2   3   4
+  5   6   7   8
+  9  10  11  12
+ 13  14  15
 w
 You entered direction: up
-s
-You entered direction: down
 a
 You entered direction: left
+s
+You entered direction: down
+d
+You entered direction: right
 f
 q
 
@@ -81,14 +63,13 @@ Bye!
 
 [solution]
 ```cpp
+#include <cassert>
 #include <iostream>
 #include <numeric>
-#include <assert.h>
-#include <string_view>
 
 // Increase amount of new lines if your field isn't
 // at the very bottom of the console
-constexpr int g_consoleLines{25};
+constexpr int g_consoleLines{ 25 };
 
 class Direction
 {
@@ -114,16 +95,28 @@ public:
 
     Direction operator-() const
     {
-        switch(m_type)
+        switch (m_type)
         {
-            case up:    return Direction{down};
-            case down:  return Direction{up};
-            case left:  return Direction{right};
-            case right: return Direction{left};
+        case up:    return Direction{ down };
+        case down:  return Direction{ up };
+        case left:  return Direction{ right };
+        case right: return Direction{ left };
         }
 
         assert(0 && "Unsupported direction was passed!");
-        return Direction{up};
+        return Direction{ up };
+    }
+
+    friend std::ostream& operator<<(std::ostream& stream, Direction dir)
+    {
+        switch (dir.getType())
+        {
+        case Direction::up:     return (stream << "up");
+        case Direction::down:   return (stream << "down");
+        case Direction::left:   return (stream << "left");
+        case Direction::right:  return (stream << "right");
+        default:                return (stream << "unknown direction");
+        }
     }
 
 private:
@@ -158,7 +151,7 @@ namespace UserInput
     char getCommandFromUser()
     {
         char ch{};
-        while(!isValidCommand(ch))
+        while (!isValidCommand(ch))
             ch = getCharacter();
 
         return ch;
@@ -166,16 +159,16 @@ namespace UserInput
 
     Direction charToDirection(char ch)
     {
-        switch(ch)
+        switch (ch)
         {
-            case 'w': return Direction{Direction::up};
-            case 's': return Direction{Direction::down};
-            case 'a': return Direction{Direction::left};
-            case 'd': return Direction{Direction::right};
+        case 'w': return Direction{ Direction::up };
+        case 's': return Direction{ Direction::down };
+        case 'a': return Direction{ Direction::left };
+        case 'd': return Direction{ Direction::right };
         }
 
         assert(0 && "Unsupported direction was passed!");
-        return Direction{Direction::up};
+        return Direction{ Direction::up };
     }
 };
 
@@ -190,11 +183,11 @@ public:
 
     friend std::ostream& operator<<(std::ostream& stream, Tile tile)
     {
-        if(tile.m_num > 9) // if two digit number
+        if (tile.m_num > 9) // if two digit number
             stream << " " << tile.m_num << " ";
-        else if(tile.m_num > 0) // if one digit number
+        else if (tile.m_num > 0) // if one digit number
             stream << "  " << tile.m_num << " ";
-        else if(tile.m_num == 0) // if empty spot
+        else if (tile.m_num == 0) // if empty spot
             stream << "    ";
         return stream;
     }
@@ -217,7 +210,7 @@ public:
 
     static void printEmptyLines(int count)
     {
-        for(int i = 0; i < count; ++i)
+        for (int i = 0; i < count; ++i)
             std::cout << '\n';
     }
 
@@ -230,9 +223,9 @@ public:
         // enough space. 
         printEmptyLines(g_consoleLines);
 
-        for(int y = 0; y < SIZE; ++y)
+        for (int y = 0; y < SIZE; ++y)
         {
-            for(int x = 0; x < SIZE; ++x)
+            for (int x = 0; x < SIZE; ++x)
                 stream << field.m_tiles[y][x];
             stream << '\n';
         }
@@ -246,42 +239,29 @@ private:
         Tile{ 1 }, Tile { 2 }, Tile { 3 } , Tile { 4 },
         Tile { 5 } , Tile { 6 }, Tile { 7 }, Tile { 8 },
         Tile { 9 }, Tile { 10 }, Tile { 11 }, Tile { 12 },
-        Tile { 13 }, Tile { 14 }, Tile { 15 }, Tile { 0 }};
+        Tile { 13 }, Tile { 14 }, Tile { 15 }, Tile { 0 } };
 };
-
-// Note: this function is for single use. You can delete it after testing your code
-std::string_view directionToStr(Direction dir)
-{
-    switch(dir.getType())
-    {
-        case Direction::up:     return "up";
-        case Direction::down:   return "down";
-        case Direction::left:   return "left";
-        case Direction::right:  return "right";
-    }
-    assert(0 && "Unsupported direction was passed!");
-    return "?";
-}
 
 int main()
 {
-    std::cout << "Please enter one of the following:\n"
-        << "- a valid direction\n"
-        << "- an invalid command\n"
-        << "- the quit command\n";
+    Field field{};
+    std::cout << field;
 
-    while(true)
+    while (true)
     {
-        char ch{UserInput::getCommandFromUser()};
+        char ch{ UserInput::getCommandFromUser() };
 
-        if(ch == 'q')
+        // Handle non-direction commands
+        if (ch == 'q')
         {
             std::cout << "\n\nBye!\n\n";
             return 0;
         }
 
-        std::cout << "You entered direction: " << 
-                directionToStr(UserInput::charToDirection(ch)) << '\n';
+        // Handle direction commands
+        Direction dir{ UserInput::charToDirection(ch) };
+
+        std::cout << "You entered direction: " << dir << '\n';
     }
 
     return 0;
