@@ -68,6 +68,23 @@ public:
         return Direction{ up };
     }
 
+    Type getType() const
+    {
+        return m_type;
+    }
+
+    friend std::ostream& operator<<(std::ostream& stream, Direction dir)
+    {
+        switch (dir.getType())
+        {
+        case Direction::up:     return (stream << "up");
+        case Direction::down:   return (stream << "down");
+        case Direction::left:   return (stream << "left");
+        case Direction::right:  return (stream << "right");
+        default:                return (stream << "unknown direction");
+        }
+    }
+
     static Direction getRandomDirection()
     {
         Type random{ static_cast<Type>(Random::get(0, Type::max_directions - 1)) };
@@ -270,7 +287,7 @@ public:
 
 private:
     static const int SIZE = 4;
-    Tile m_tiles[SIZE][SIZE] { 
+    Tile m_tiles[SIZE][SIZE]{
         Tile{ 1 }, Tile { 2 }, Tile { 3 } , Tile { 4 },
         Tile { 5 } , Tile { 6 }, Tile { 7 }, Tile { 8 },
         Tile { 9 }, Tile { 10 }, Tile { 11 }, Tile { 12 },
