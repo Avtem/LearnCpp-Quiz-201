@@ -192,9 +192,11 @@ int main()
     while (true)
     {
         char ch{ UserInput::getCommandFromUser() };
+
         // If we reach the line below, "ch" will ALWAYS be a correct command!
         std::cout << "Valid command: " << ch << '\n';
         
+        // Handle non-direction commands
         if (ch == 'q')
         {
             std::cout << "\n\nBye!\n\n";
