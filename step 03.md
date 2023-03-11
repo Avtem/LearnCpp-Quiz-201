@@ -2,7 +2,7 @@ C) Next, we need some way for the user to input commands, so that we can work to
 
 Our game will support 5 commands, each of which will be input as a single character:
 * 'w' - slide tile up
-* 'a' - slide tiles left
+* 'a' - slide tile left
 * 's' - slide tile down
 * 'd' - slide tile right
 * 'q' - quit game
@@ -62,7 +62,7 @@ Valid command: d
 f
 g
 h
-q
+Valid command: q
 
 
 Bye!
@@ -192,14 +192,14 @@ int main()
     while (true)
     {
         char ch{ UserInput::getCommandFromUser() };
-
+        // If we reach the line below, "ch" will ALWAYS be a correct command!
+        std::cout << "Valid command: " << ch << '\n';
+        
         if (ch == 'q')
         {
             std::cout << "\n\nBye!\n\n";
             return 0;
         }
-
-        std::cout << "Valid command: " << ch << '\n';
     }
 
     return 0;
