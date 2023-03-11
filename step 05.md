@@ -1,4 +1,4 @@
-E) Our game board is a 4x4 grid of tiles, which we store in a two-dimensional array `m_tiles`.  We will access a given tile using it's {x, y} coordinates.  For example, the top left tile has coordinate {0, 0}.  The tile to the right of that has coordinate {1, 0}.
+E) Our game board is a 4x4 grid of tiles, which we store in a two-dimensional array `m_tiles`.  We will access a given tile using it's {y, x} coordinates ([row-oriented data](https://upload.wikimedia.org/wikipedia/commons/thumb/4/4d/Row_and_column_major_order.svg/800px-Row_and_column_major_order.svg.png)).  For example, the top left tile has coordinate {0, 0}.  The tile to the right of that has coordinate {0, 1} (y stays 0, and x becomes 1).
 
 Since we'll be working with coordinates a lot, let's create an object to help us manage coordinates as {x, y} pairs of values.
 
