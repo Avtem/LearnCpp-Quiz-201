@@ -1,13 +1,11 @@
-E) Our game board is a 4x4 grid of tiles, which we store in a two-dimensional array `m_tiles`.  We will access a given tile using it's {y, x} coordinates ([row-oriented data](https://upload.wikimedia.org/wikipedia/commons/thumb/4/4d/Row_and_column_major_order.svg/800px-Row_and_column_major_order.svg.png)).  For example, the top left tile has coordinate {0, 0}.  The tile to the right of that has coordinate {0, 1} (y stays 0, and x becomes 1).
+E) Our game board is a 4x4 grid of `Tile`, which we store in two-dimensional array member `m_tiles` of the `Field` class.  We will access a given tile using its {x, y} coordinates.  For example, the top left tile has coordinate {0, 0}.  The tile to the right of that has coordinate {1, 0} (x becomes 1, y stays 0).  The tile one down from that has coordinate {1, 1}.
 
 Since we'll be working with coordinates a lot, let's create an object to help us manage coordinates as {x, y} pairs of values.
 
 Implement a class type named `Point`.  This should contain:
-* Two public members to store the x-axis and y-axis coordinates.
-* Overloaded operator== and operator!= to compare two sets of coordinates
-* Overloaded binary operator+ and binary operator- to add/subtract two sets of coordinates
-
-Now we can also implement a conversion operator in class `Direction` which will convert a direction (up, down, left, right) to a `Point` object that would represent the same thing but in a good known cartesian coordinate system (notice, in computer programming Y axis is often reversed -- Y coordinate increases when you go **down** and decreases when you go **up**): up = {0, -1}, left = {-1, 0}, etc.
+* Two members to store the x-axis and y-axis coordinates.
+* An overloaded `operator==` and `operator!=` to compare two sets of coordinates.
+* Implement operator+(Point, Direction).  This will allow us to take a `Point` and add a `Direction` to it, in order to get the `Point` in that direction.  For example, `Point{1, 1}` + `Direction{Direction::right}` == `Point{2, 1}`
 
 The following code should run and print “true” for every test-case:
 
@@ -16,62 +14,30 @@ The following code should run and print “true” for every test-case:
 
 int main()
 {
-    // Code to test our Point struct
-    Point p1{ 1,2 };
-    Point p2{ 3,4 };
-    const Point p3{ 4,6 };
-    
-    // Don't forget to test Direction::operator Point() !
-    const Direction direction {Direction::up};
-    const Point pointUp{ 0,-1 };
-    const Point pointLeft{ -1,0 };
+    std::cout << std::boolalpha;
+    std::cout << (Point{ 1, 1 } + Direction{ Direction::up }     == Point{ 1, 0 }) << '\n';
+    std::cout << (Point{ 1, 1 } + Direction{ Direction::down }   == Point{ 1, 2 }) << '\n';
+    std::cout << (Point{ 1, 1 } + Direction{ Direction::left }   == Point{ 0, 1 }) << '\n';
+    std::cout << (Point{ 1, 1 } + Direction{ Direction::right }  == Point{ 2, 1 }) << '\n';
+    std::cout << (Point{ 1, 1 } != Point{ 2, 1 }) << '\n';
+    std::cout << (Point{ 1, 1 } != Point{ 1, 2 }) << '\n';
+    std::cout << !(Point{ 1, 1 } != Point{ 1, 1 }) << '\n';
 
-    std::cout << std::boolalpha << ((p1 + p2) == p3) << '\n';
-    std::cout << ((p1 - p2) == Point{ -2, -2 }) << '\n';
-    std::cout << (p1 != p2) << '\n';
-    std::cout << (static_cast<Point>(direction) == pointUp) << '\n';
-    std::cout << (static_cast<Point>(direction) != pointLeft) << '\n';
-    
     return 0;
 }
 ```
 
 [solution]
 ```cpp
+#include <array>
+#include <cassert>
 #include <iostream>
 #include <numeric>
-#include <array>
-#include <assert.h>
-#include <string_view>
+#include "Random.h"
 
 // Increase amount of new lines if your field isn't
 // at the very bottom of the console
-constexpr int g_consoleLines{25};
-
-
-// Struct Point must be at top because other classes depend on it
-struct Point
-{
-    int x{};
-    int y{};
-
-    bool operator==(Point other) const
-    {
-        return x == other.x && y == other.y;
-    }
-    bool operator!=(Point other) const
-    {
-        return !(*this == other);
-    }
-    Point operator+(Point other) const
-    {
-        return { x + other.x, y + other.y };
-    }
-    Point operator-(Point other) const
-    {
-        return { x - other.x, y - other.y };
-    }
-};
+constexpr int g_consoleLines{ 25 };
 
 class Direction
 {
@@ -90,12 +56,6 @@ public:
     {
     }
 
-    explicit operator Point() const
-    {
-        static const std::array<Point, 4> dirs{ { {0,-1}, {0,1}, {-1,0}, {1,0} } };
-        return dirs[m_type];
-    }
-
     Type getType() const
     {
         return m_type;
@@ -103,22 +63,62 @@ public:
 
     Direction operator-() const
     {
-        switch(m_type)
+        switch (m_type)
         {
-            case up:    return Direction{down};
-            case down:  return Direction{up};
-            case left:  return Direction{right};
-            case right: return Direction{left};
+        case up:    return Direction{ down };
+        case down:  return Direction{ up };
+        case left:  return Direction{ right };
+        case right: return Direction{ left };
         }
 
         assert(0 && "Unsupported direction was passed!");
-        return Direction{up};
+        return Direction{ up };
+    }
+
+    friend std::ostream& operator<<(std::ostream& stream, Direction dir)
+    {
+        switch (dir.getType())
+        {
+        case Direction::up:     return (stream << "up");
+        case Direction::down:   return (stream << "down");
+        case Direction::left:   return (stream << "left");
+        case Direction::right:  return (stream << "right");
+        default:                return (stream << "unknown direction");
+        }
     }
 
 private:
     Type m_type{};
 };
 
+struct Point
+{
+    int x{};
+    int y{};
+
+    friend bool operator==(Point p1, Point p2)
+    {
+        return p1.x == p2.x && p1.y == p2.y;
+    }
+
+    friend bool operator!=(Point p1, Point p2)
+    {
+        return !(p1 == p2);
+    }
+
+    friend Point operator+(Point p, Direction d)
+    {
+        switch (d.getType())
+        {
+        case Direction::up:     return Point{ p.x,      p.y - 1 };
+        case Direction::down:   return Point{ p.x,      p.y + 1 };
+        case Direction::left:   return Point{ p.x - 1,  p.y };
+        case Direction::right:  return Point{ p.x + 1,  p.y };
+        }
+
+        return p;
+    }
+};
 
 namespace UserInput
 {
@@ -147,7 +147,7 @@ namespace UserInput
     char getCommandFromUser()
     {
         char ch{};
-        while(!isValidCommand(ch))
+        while (!isValidCommand(ch))
             ch = getCharacter();
 
         return ch;
@@ -155,16 +155,16 @@ namespace UserInput
 
     Direction charToDirection(char ch)
     {
-        switch(ch)
+        switch (ch)
         {
-            case 'w': return Direction{Direction::up};
-            case 's': return Direction{Direction::down};
-            case 'a': return Direction{Direction::left};
-            case 'd': return Direction{Direction::right};
+        case 'w': return Direction{ Direction::up };
+        case 's': return Direction{ Direction::down };
+        case 'a': return Direction{ Direction::left };
+        case 'd': return Direction{ Direction::right };
         }
 
         assert(0 && "Unsupported direction was passed!");
-        return Direction{Direction::up};
+        return Direction{ Direction::up };
     }
 };
 
@@ -179,11 +179,11 @@ public:
 
     friend std::ostream& operator<<(std::ostream& stream, Tile tile)
     {
-        if(tile.m_num > 9) // if two digit number
+        if (tile.m_num > 9) // if two digit number
             stream << " " << tile.m_num << " ";
-        else if(tile.m_num > 0) // if one digit number
+        else if (tile.m_num > 0) // if one digit number
             stream << "  " << tile.m_num << " ";
-        else if(tile.m_num == 0) // if empty spot
+        else if (tile.m_num == 0) // if empty spot
             stream << "    ";
         return stream;
     }
@@ -206,7 +206,7 @@ public:
 
     static void printEmptyLines(int count)
     {
-        for(int i = 0; i < count; ++i)
+        for (int i = 0; i < count; ++i)
             std::cout << '\n';
     }
 
@@ -219,9 +219,9 @@ public:
         // enough space. 
         printEmptyLines(g_consoleLines);
 
-        for(int y = 0; y < SIZE; ++y)
+        for (int y = 0; y < SIZE; ++y)
         {
-            for(int x = 0; x < SIZE; ++x)
+            for (int x = 0; x < SIZE; ++x)
                 stream << field.m_tiles[y][x];
             stream << '\n';
         }
@@ -232,44 +232,23 @@ public:
 private:
     static const int SIZE = 4;
     Tile m_tiles[SIZE][SIZE]{
-        Tile {  1 }, Tile {  2 }, Tile {  3 }, Tile {  4 },
-        Tile {  5 }, Tile {  6 }, Tile {  7 }, Tile {  8 },
-        Tile {  9 }, Tile { 10 }, Tile { 11 }, Tile { 12 },
-        Tile { 13 }, Tile { 14 }, Tile { 15 }, Tile {  0 } };
+        Tile{ 1 }, Tile { 2 }, Tile { 3 } , Tile { 4 },
+        Tile { 5 } , Tile { 6 }, Tile { 7 }, Tile { 8 },
+        Tile { 9 }, Tile { 10 }, Tile { 11 }, Tile { 12 },
+        Tile { 13 }, Tile { 14 }, Tile { 15 }, Tile { 0 } };
 };
-
-// Note: this function is for single use. You can delete it after testing your code
-std::string_view directionToStr(Direction dir)
-{
-    switch(dir.getType())
-    {
-        case Direction::up:     return "up";
-        case Direction::down:   return "down";
-        case Direction::left:   return "left";
-        case Direction::right:  return "right";
-    }
-    assert(0 && "Unsupported direction was passed!");
-    return "?";
-}
 
 int main()
 {
-    // Code to test our Point struct
-    Point p1{ 1,2 };
-    Point p2{ 3,4 };
-    const Point p3{ 4,6 };
-    
-    // Don't forget to test Direction::operator Point() !
-    const Direction direction {Direction::up};
-    const Point pointUp{ 0,-1 };
-    const Point pointLeft{ -1,0 };
+    std::cout << std::boolalpha;
+    std::cout << (Point{ 1, 1 } + Direction{ Direction::up }     == Point{ 1, 0 }) << '\n';
+    std::cout << (Point{ 1, 1 } + Direction{ Direction::down }   == Point{ 1, 2 }) << '\n';
+    std::cout << (Point{ 1, 1 } + Direction{ Direction::left }   == Point{ 0, 1 }) << '\n';
+    std::cout << (Point{ 1, 1 } + Direction{ Direction::right }  == Point{ 2, 1 }) << '\n';
+    std::cout << (Point{ 1, 1 } != Point{ 2, 1 }) << '\n';
+    std::cout << (Point{ 1, 1 } != Point{ 1, 2 }) << '\n';
+    std::cout << !(Point{ 1, 1 } != Point{ 1, 1 }) << '\n';
 
-    std::cout << std::boolalpha << ((p1 + p2) == p3) << '\n';
-    std::cout << ((p1 - p2) == Point{ -2, -2 }) << '\n';
-    std::cout << (p1 != p2) << '\n';
-    std::cout << (static_cast<Point>(direction) == pointUp) << '\n';
-    std::cout << (static_cast<Point>(direction) != pointLeft) << '\n';
-    
     return 0;
 }
 ```
