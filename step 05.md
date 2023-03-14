@@ -86,6 +86,12 @@ public:
         default:                return (stream << "unknown direction");
         }
     }
+    
+    static Direction getRandomDirection()
+    {
+        Type random{ static_cast<Type>(Random::get(0, Type::max_directions - 1)) };
+        return Direction{ random };
+    }
 
 private:
     Type m_type{};
