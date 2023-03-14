@@ -251,11 +251,16 @@ private:
 
 int main()
 {
+    const Direction up {Direction::up};
+    const Direction down {Direction::down};
+    const Direction left {Direction::left};
+    const Direction right {Direction::right};
+    
     std::cout << std::boolalpha;
-    std::cout << (Point{ 1, 1 } + Direction{ Direction::up }     == Point{ 1, 0 }) << '\n';
-    std::cout << (Point{ 1, 1 } + Direction{ Direction::down }   == Point{ 1, 2 }) << '\n';
-    std::cout << (Point{ 1, 1 } + Direction{ Direction::left }   == Point{ 0, 1 }) << '\n';
-    std::cout << (Point{ 1, 1 } + Direction{ Direction::right }  == Point{ 2, 1 }) << '\n';
+    std::cout << (Point{ 1, 1 }.getAdjacent(up   )  == Point{ 1, 0 }) << '\n';
+    std::cout << (Point{ 1, 1 }.getAdjacent(down )  == Point{ 1, 2 }) << '\n';
+    std::cout << (Point{ 1, 1 }.getAdjacent(left )  == Point{ 0, 1 }) << '\n';
+    std::cout << (Point{ 1, 1 }.getAdjacent(right)  == Point{ 2, 1 }) << '\n';
     std::cout << (Point{ 1, 1 } != Point{ 2, 1 }) << '\n';
     std::cout << (Point{ 1, 1 } != Point{ 1, 2 }) << '\n';
     std::cout << !(Point{ 1, 1 } != Point{ 1, 1 }) << '\n';
