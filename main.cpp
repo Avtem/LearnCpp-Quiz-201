@@ -20,7 +20,7 @@ public:
         max_directions,
     };
 
-    explicit Direction(Type type)
+    Direction(Type type)
         :m_type(type)
     {
     }
