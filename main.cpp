@@ -8,29 +8,6 @@
 // at the very bottom of the console
 constexpr int g_consoleLines{ 25 };
 
-struct Point
-{
-    int x{};
-    int y{};
-
-    bool operator==(Point other) const
-    {
-        return x == other.x && y == other.y;
-    }
-    bool operator!=(Point other) const
-    {
-        return !(*this == other);
-    }
-    Point operator+(Point other) const
-    {
-        return { x + other.x, y + other.y };
-    }
-    Point operator-(Point other) const
-    {
-        return { x - other.x, y - other.y };
-    }
-};
-
 class Direction
 {
 public:
@@ -46,12 +23,6 @@ public:
     explicit Direction(Type type)
         :m_type(type)
     {
-    }
-
-    explicit operator Point() const
-    {
-        static const std::array<Point, 4> dirs{ { {0,-1}, {0,1}, {-1,0}, {1,0} } };
-        return dirs[m_type];
     }
 
     Direction operator-() const
@@ -94,6 +65,35 @@ public:
 private:
     Type m_type{};
 
+};
+
+struct Point
+{
+    int x{};
+    int y{};
+
+    friend bool operator==(Point p1, Point p2)
+    {
+        return p1.x == p2.x && p1.y == p2.y;
+    }
+
+    friend bool operator!=(Point p1, Point p2)
+    {
+        return !(p1 == p2);
+    }
+    
+    friend Point operator+(Point p, Direction d)
+    {
+        switch (d.getType())
+        {
+        case Direction::up:     return Point{ p.x,      p.y - 1 };
+        case Direction::down:   return Point{ p.x,      p.y + 1 };
+        case Direction::left:   return Point{ p.x - 1,  p.y };
+        case Direction::right:  return Point{ p.x + 1,  p.y };
+        }
+
+        return p;
+    }
 };
 
 namespace UserInput
@@ -225,7 +225,7 @@ public:
     // if adj. point is invalid, it returns the origin
     Point getAdjPoint(const Point& origin, Direction dir)
     {
-        Point copy = origin + Point(dir);
+        Point copy = origin + dir;
 
         if (isValidTilePos(copy))
             return copy;
