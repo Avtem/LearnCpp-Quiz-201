@@ -81,18 +81,18 @@ struct Point
     {
         return !(p1 == p2);
     }
-    
-    friend Point operator+(Point p, Direction d)
+
+    Point getAdjacentPoint(Direction d) const
     {
         switch (d.getType())
         {
-        case Direction::up:     return Point{ p.x,      p.y - 1 };
-        case Direction::down:   return Point{ p.x,      p.y + 1 };
-        case Direction::left:   return Point{ p.x - 1,  p.y };
-        case Direction::right:  return Point{ p.x + 1,  p.y };
+        case Direction::up:     return Point{ x,      y - 1 };
+        case Direction::down:   return Point{ x,      y + 1 };
+        case Direction::left:   return Point{ x - 1,  y };
+        case Direction::right:  return Point{ x + 1,  y };
         }
 
-        return p;
+        return *this;
     }
 };
 
@@ -223,12 +223,12 @@ public:
     }
 
     // if adj. point is invalid, it returns the origin
-    Point getAdjPoint(const Point& origin, Direction dir)
+    Point getAdjacentPoint(const Point& origin, Direction dir)
     {
-        Point copy = origin + dir;
+        Point adj{ origin.getAdjacentPoint(dir) };
 
-        if (isValidTilePos(copy))
-            return copy;
+        if (isValidTilePos(adj))
+            return adj;
 
         // that adj tile is not valid, so return the origin point
         return origin;
@@ -254,7 +254,7 @@ public:
     bool moveTiles(Direction dir)
     {
         Point emptyTile{ getEmptyTilePos() };
-        Point movingTile = getAdjPoint(emptyTile, -dir);
+        Point movingTile = getAdjacentPoint(emptyTile, -dir);
         // we didn't move
         if (emptyTile == movingTile)
             return false;
@@ -279,7 +279,7 @@ public:
             Point ptAdj{ pt0tile };
             // if random direction lead us to nowhere, try again
             while (pt0tile == ptAdj)
-                ptAdj = getAdjPoint(pt0tile, Direction::getRandomDirection());
+                ptAdj = getAdjacentPoint(pt0tile, Direction::getRandomDirection());
 
             swapTiles(pt0tile, ptAdj);
         }
