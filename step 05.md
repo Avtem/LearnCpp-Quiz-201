@@ -3,9 +3,9 @@ E) Our game board is a 4x4 grid of `Tile`, which we store in two-dimensional arr
 Since we'll be working with coordinates a lot, let's create an object to help us manage coordinates as {x, y} pairs of values.
 
 Implement a class type named `Point`.  This should contain:
-* Two members to store the x-axis and y-axis coordinates.
+* Two data members to store the x-axis and y-axis coordinates.
 * An overloaded `operator==` and `operator!=` to compare two sets of coordinates.
-* Implement operator+(Point, Direction).  This will allow us to take a `Point` and add a `Direction` to it, in order to get the `Point` in that direction.  For example, `Point{1, 1}` + `Direction{Direction::right}` == `Point{2, 1}`
+* A member function `Point getAdjacentPoint(Direction)`.   This should return a `Point` that is adjacent to the implicit Point object in the direction of `Direction`.  For example, `Point{1, 1}.getAdjacentPoint(Direction::right)` == `Point{2, 1}`.
 
 The following code should run and print “true” for every test-case:
 
@@ -14,16 +14,11 @@ The following code should run and print “true” for every test-case:
 
 int main()
 {
-    const Direction up {Direction::up};
-    const Direction down {Direction::down};
-    const Direction left {Direction::left};
-    const Direction right {Direction::right};
-    
     std::cout << std::boolalpha;
-    std::cout << (Point{ 1, 1 }.getAdjacent(up   )  == Point{ 1, 0 }) << '\n';
-    std::cout << (Point{ 1, 1 }.getAdjacent(down )  == Point{ 1, 2 }) << '\n';
-    std::cout << (Point{ 1, 1 }.getAdjacent(left )  == Point{ 0, 1 }) << '\n';
-    std::cout << (Point{ 1, 1 }.getAdjacent(right)  == Point{ 2, 1 }) << '\n';
+    std::cout << (Point{ 1, 1 }.getAdjacentPoint(Direction::up)    == Point{ 1, 0 }) << '\n';
+    std::cout << (Point{ 1, 1 }.getAdjacentPoint(Direction::down)  == Point{ 1, 2 }) << '\n';
+    std::cout << (Point{ 1, 1 }.getAdjacentPoint(Direction::left)  == Point{ 0, 1 }) << '\n';
+    std::cout << (Point{ 1, 1 }.getAdjacentPoint(Direction::right) == Point{ 2, 1 }) << '\n';
     std::cout << (Point{ 1, 1 } != Point{ 2, 1 }) << '\n';
     std::cout << (Point{ 1, 1 } != Point{ 1, 2 }) << '\n';
     std::cout << !(Point{ 1, 1 } != Point{ 1, 1 }) << '\n';
@@ -56,7 +51,7 @@ public:
         max_directions,
     };
 
-    explicit Direction(Type type)
+    Direction(Type type)
         :m_type(type)
     {
     }
@@ -91,7 +86,7 @@ public:
         default:                return (stream << "unknown direction");
         }
     }
-    
+
     static Direction getRandomDirection()
     {
         Type random{ static_cast<Type>(Random::get(0, Type::max_directions - 1)) };
@@ -117,7 +112,7 @@ struct Point
         return !(p1 == p2);
     }
 
-    Point getAdjacent(Direction dir) const
+    Point getAdjacentPoint(Direction dir) const
     {
         switch (dir.getType())
         {
@@ -251,16 +246,11 @@ private:
 
 int main()
 {
-    const Direction up {Direction::up};
-    const Direction down {Direction::down};
-    const Direction left {Direction::left};
-    const Direction right {Direction::right};
-    
     std::cout << std::boolalpha;
-    std::cout << (Point{ 1, 1 }.getAdjacent(up   )  == Point{ 1, 0 }) << '\n';
-    std::cout << (Point{ 1, 1 }.getAdjacent(down )  == Point{ 1, 2 }) << '\n';
-    std::cout << (Point{ 1, 1 }.getAdjacent(left )  == Point{ 0, 1 }) << '\n';
-    std::cout << (Point{ 1, 1 }.getAdjacent(right)  == Point{ 2, 1 }) << '\n';
+    std::cout << (Point{ 1, 1 }.getAdjacentPoint(Direction::up)    == Point{ 1, 0 }) << '\n';
+    std::cout << (Point{ 1, 1 }.getAdjacentPoint(Direction::down)  == Point{ 1, 2 }) << '\n';
+    std::cout << (Point{ 1, 1 }.getAdjacentPoint(Direction::left)  == Point{ 0, 1 }) << '\n';
+    std::cout << (Point{ 1, 1 }.getAdjacentPoint(Direction::right) == Point{ 2, 1 }) << '\n';
     std::cout << (Point{ 1, 1 } != Point{ 2, 1 }) << '\n';
     std::cout << (Point{ 1, 1 } != Point{ 1, 2 }) << '\n';
     std::cout << !(Point{ 1, 1 } != Point{ 1, 1 }) << '\n';
