@@ -1,6 +1,6 @@
 D) After implementing the prior step, we can accept commands from the user (as characters 'w', 'a', 's', 'd', and 'q').  These characters are essentially magic numbers in our code.  While it's fine to handle these commands in our `UserInput` namespace and function `main()`, we don't want to propagate them throughout our whole program.  For example, the `Field` class should have no knowledge of what 's' means.
 
-Instead, we're going to implement a helper class named `Direction`, which will allow us to create objects that represent the cardinal directions (up, left, down, or right).
+Instead, we're going to implement a helper class named `Direction`, which will allow us to create objects that represent the cardinal directions (up, left, down, or right).  The more we can use `Direction` instead of directional commands (e.g. 's'), the easier our code will be to read and understand.
 
 Implement the class `Direction`, which has:
 * A public nested enum named `Type` with enumerators `up`, `down`, `left`, `right`, and `max_directions` (we'll use this last one later).
