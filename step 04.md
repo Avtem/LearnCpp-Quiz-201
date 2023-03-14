@@ -3,55 +3,15 @@ D) After implementing the prior step, we can accept commands from the user (as c
 Instead, we're going to implement a helper class named `Direction`, which will allow us to create objects that represent the cardinal directions (up, left, down, or right).  The more we can use `Direction` instead of directional commands (e.g. 's'), the easier our code will be to read and understand.
 
 Implement the class `Direction`, which has:
-* A public nested enum named `Type` with enumerators `up`, `down`, `left`, `right`, and `max_directions` (we'll use this last one later).
+* A public nested enum named `Type` with enumerators `up`, `down`, `left`, `right`, and `max_directions`.
 * A private member that stores the actual direction.
 * A single argument constructor which allows us to initialize a `Direction` with a `Type` initializer.
 * An overloaded `operator-`, which takes a Direction and returns the opposite Direction.
 * An overloaded `operator<<`, which outputs the Direction name to the console.
-
-Our class `Direction` should also be able to generate a random direction (we'll use this function later). Since we already designed a good code for randomization in [Chapter 07](https://www.learncpp.com/cpp-tutorial/generating-random-numbers-using-mersenne-twister/), let's add that code as a separate `Random.h` file, which we will include in our `main.cpp` file:
-
-## Random.h file
-```cpp
-#ifndef RANDOM_MT_H
-#define RANDOM_MT_H
-
-#include <chrono>
-#include <random>
-
-namespace Random
-{
-	inline std::mt19937 init()
-	{
-		std::random_device rd;
-
-		// Create seed_seq with high-res clock and 7 random numbers from std::random_device
-		std::seed_seq ss{
-			static_cast<unsigned int>(std::chrono::steady_clock::now().time_since_epoch().count()),
-			rd(), rd(), rd(), rd(), rd(), rd(), rd() };
-
-		return std::mt19937{ ss };
-	}
-
-	inline std::mt19937 mt{ init() }; // here's our std::mt19937 PRNG object
-
-	// Generate a random number between [min, max] (inclusive)
-	inline int get(int min, int max)
-	{
-		// we can create a distribution in any function that needs it
-		std::uniform_int_distribution die{ min, max };
-		return die(mt); // and then generate a random number from our global generator
-	}
-};
-
-#endif
-```
-
-With that file added to our program, let's add another member function to class `Direction`:
-* A function that will return a random `Direction` object.
+* A static function that returns a Direction with a randomized `Type`.  You can use the `Random::get()` function from the ["Random.h"](https://www.learncpp.com/cpp-tutorial/generating-random-numbers-using-mersenne-twister/#RandomH) header to generate a random number.
 
 Also, in the `UserInput` namespace, add the following:
-* A function that will convert a command (character) to a Direction object.
+* A function that will convert a directional command (character) to a Direction object.
 
 Finally, modify the program you wrote in the prior step so that the output matches the following:
 
