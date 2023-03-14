@@ -14,11 +14,16 @@ The following code should run and print “true” for every test-case:
 
 int main()
 {
+    const Direction up {Direction::up};
+    const Direction down {Direction::down};
+    const Direction left {Direction::left};
+    const Direction right {Direction::right};
+    
     std::cout << std::boolalpha;
-    std::cout << (Point{ 1, 1 } + Direction{ Direction::up }     == Point{ 1, 0 }) << '\n';
-    std::cout << (Point{ 1, 1 } + Direction{ Direction::down }   == Point{ 1, 2 }) << '\n';
-    std::cout << (Point{ 1, 1 } + Direction{ Direction::left }   == Point{ 0, 1 }) << '\n';
-    std::cout << (Point{ 1, 1 } + Direction{ Direction::right }  == Point{ 2, 1 }) << '\n';
+    std::cout << (Point{ 1, 1 }.getAdjacent(up   )  == Point{ 1, 0 }) << '\n';
+    std::cout << (Point{ 1, 1 }.getAdjacent(down )  == Point{ 1, 2 }) << '\n';
+    std::cout << (Point{ 1, 1 }.getAdjacent(left )  == Point{ 0, 1 }) << '\n';
+    std::cout << (Point{ 1, 1 }.getAdjacent(right)  == Point{ 2, 1 }) << '\n';
     std::cout << (Point{ 1, 1 } != Point{ 2, 1 }) << '\n';
     std::cout << (Point{ 1, 1 } != Point{ 1, 2 }) << '\n';
     std::cout << !(Point{ 1, 1 } != Point{ 1, 1 }) << '\n';
@@ -112,17 +117,17 @@ struct Point
         return !(p1 == p2);
     }
 
-    friend Point operator+(Point p, Direction d)
+    Point getAdjacent(Direction dir) const
     {
-        switch (d.getType())
+        switch (dir.getType())
         {
-        case Direction::up:     return Point{ p.x,      p.y - 1 };
-        case Direction::down:   return Point{ p.x,      p.y + 1 };
-        case Direction::left:   return Point{ p.x - 1,  p.y };
-        case Direction::right:  return Point{ p.x + 1,  p.y };
+        case Direction::up:     return Point{ x,     y - 1 };
+        case Direction::down:   return Point{ x,     y + 1 };
+        case Direction::left:   return Point{ x - 1, y };
+        case Direction::right:  return Point{ x + 1, y };
         }
 
-        return p;
+        return *this;
     }
 };
 
