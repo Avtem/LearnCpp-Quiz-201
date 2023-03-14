@@ -4,10 +4,51 @@ Instead, we're going to implement a helper class named `Direction`, which will a
 
 Implement the class `Direction`, which has:
 * A public nested enum named `Type` with enumerators `up`, `down`, `left`, `right`, and `max_directions` (we'll use this last one later).
-* A private member that stores the actual direction
+* A private member that stores the actual direction.
 * A single argument constructor which allows us to initialize a `Direction` with a `Type` initializer.
 * An overloaded `operator-`, which takes a Direction and returns the opposite Direction.
 * An overloaded `operator<<`, which outputs the Direction name to the console.
+
+Our class `Direction` should also be able to generate a random direction (we'll use this function later). Since we already designed a good code for randomization in [Chapter 07](https://www.learncpp.com/cpp-tutorial/generating-random-numbers-using-mersenne-twister/), let's add that code as a separate `Random.h` file, which we will include in our `main.cpp` file:
+
+## Random.h file
+```cpp
+#ifndef RANDOM_MT_H
+#define RANDOM_MT_H
+
+#include <chrono>
+#include <random>
+
+namespace Random
+{
+	inline std::mt19937 init()
+	{
+		std::random_device rd;
+
+		// Create seed_seq with high-res clock and 7 random numbers from std::random_device
+		std::seed_seq ss{
+			static_cast<unsigned int>(std::chrono::steady_clock::now().time_since_epoch().count()),
+			rd(), rd(), rd(), rd(), rd(), rd(), rd() };
+
+		return std::mt19937{ ss };
+	}
+
+	inline std::mt19937 mt{ init() }; // here's our std::mt19937 PRNG object
+
+	// Generate a random number between [min, max] (inclusive)
+	inline int get(int min, int max)
+	{
+		// we can create a distribution in any function that needs it
+		std::uniform_int_distribution die{ min, max };
+		return die(mt); // and then generate a random number from our global generator
+	}
+};
+
+#endif
+```
+
+With that file added to our program, let's add another member function to class `Direction`:
+* A function that will return a random `Direction` object.
 
 Also, in the `UserInput` namespace, add the following:
 * A function that will convert a command (character) to a Direction object.
@@ -44,7 +85,12 @@ Finally, modify the program you wrote in the prior step so that the output match
   5   6   7   8
   9  10  11  12
  13  14  15
-w
+Generating random direction... up
+Generating random direction... down
+Generating random direction... up
+Generating random direction... left
+
+Enter a command: w
 You entered direction: up
 a
 You entered direction: left
@@ -52,7 +98,6 @@ s
 You entered direction: down
 d
 You entered direction: right
-f
 q
 
 
@@ -66,6 +111,7 @@ Bye!
 #include <cassert>
 #include <iostream>
 #include <numeric>
+#include "Random.h"
 
 // Increase amount of new lines if your field isn't
 // at the very bottom of the console
@@ -117,6 +163,12 @@ public:
         case Direction::right:  return (stream << "right");
         default:                return (stream << "unknown direction");
         }
+    }
+    
+    static Direction getRandomDirection()
+    {
+        Type random{ static_cast<Type>(Random::get(0, Type::max_directions - 1)) };
+        return Direction{ random };
     }
 
 private:
@@ -247,6 +299,12 @@ int main()
     Field field{};
     std::cout << field;
 
+    std::cout << "Generating random direction... " << Direction::getRandomDirection() << '\n';
+    std::cout << "Generating random direction... " << Direction::getRandomDirection() << '\n';
+    std::cout << "Generating random direction... " << Direction::getRandomDirection() << '\n';
+    std::cout << "Generating random direction... " << Direction::getRandomDirection() << "\n\n";
+
+    std::cout << "Enter a command: ";
     while (true)
     {
         char ch{ UserInput::getCommandFromUser() };
