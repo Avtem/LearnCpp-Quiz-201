@@ -205,7 +205,7 @@ public:
         return stream;
     }
 
-    Point getEmptyTilePos()
+    Point getEmptyTilePos() const
     {
         for (int y = 0; y < SIZE; ++y)
             for (int x = 0; x < SIZE; ++x)
@@ -223,7 +223,7 @@ public:
     }
 
     // if adj. point is invalid, it returns the origin
-    Point getAdjacentPoint(const Point& origin, Direction dir)
+    Point getAdjacentPoint(const Point& origin, Direction dir) const
     {
         Point adj{ origin.getAdjacentPoint(dir) };
 
