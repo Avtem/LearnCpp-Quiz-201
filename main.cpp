@@ -268,8 +268,7 @@ public:
             do
             {
                 ptAdj = pt0tile.getAdjacentPoint(Direction::getRandomDirection());
-            }
-            while (!isValidTilePos(ptAdj));
+            } while (!isValidTilePos(ptAdj));
 
             swapTiles(pt0tile, ptAdj);
         }
@@ -304,7 +303,7 @@ int main()
         // Handle direction commands
         Direction dir{ UserInput::charToDirection(ch) };
 
-        bool userMoved = field.moveTiles(dir);
+        bool userMoved{ field.moveTile(dir) };
         if (userMoved)
             std::cout << field;
     }
