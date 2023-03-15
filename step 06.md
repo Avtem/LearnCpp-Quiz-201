@@ -1,15 +1,20 @@
-// 6) Field (find empty space, move Tile based on user input)
+F) In this step, we'll finally implement the ability for players to move the tiles in field.
 
-F) Now let's allow the player to move the tiles in field we've created!
 First, we should take a closer look at how sliding tiles actually works:
+
+Given a puzzle state that looks like this:
+
 ```text
      15   1   4
   2   5   9  12
   7   8  11  14
  10  13   6   3
 ```
-When we press 'w' on our keyboard, the only tile that can go up is tile `2`.
-After slide field looks like this:
+
+When the user enters 'w' on the keyboard, the only tile that can go up is tile `2`.
+
+After moving the tile, the field looks like this:
+
 ```text
   2  15   1   4
       5   9  12
@@ -17,16 +22,21 @@ After slide field looks like this:
  10  13   6   3
 ```
 
-So, essentially what happened is we swapped the empty tile with tile `2`. And that's it!
+So, essentially what happened is we swapped the empty tile with tile `2`.
 
-Let's implement the member functions in our `Field` class:
-* A function that returns the position of empty tile as a `Point`
-* A function that will swap two tiles by passing two `Point`s as parameters
-* IsValidTile(Point pos) which will return false if Point lies outside of our field
-* getAdjacentPoint(Point origin, Direction dir) that will return the adjacent point or the original Point in case adjacent Point is not a valid tile
-* A function moveTiles(Direction dir) that will try to move the tiles in given direction and will return `true` if it succeeds
+Let's generalize this procedure.  When the user enters a directional command, we need to:
+* Locate the empty tile.
+* From the empty tile, find the adjacent tile that is in the direction opposite of the direction the user entered.
+* Swap the two tiles.
+* Handle the case where the user enters a direction that is not valid.
 
-Finally we will need a while loop that will allow us to slide the tiles until user hits 'q', which will also allow us to test our moving functions.
+Implement the following member functions in our `Field` class:
+* A function which returns a bool indicating whether a given Point is valid (within our Field).
+* A function that finds and returns the position of empty tile as a `Point`.  We could just keep track of where the empty tile is, but that introduces a class invariant, and finding the empty tile whenever we need it isn't that expensive.
+* A function that will swap two tiles given their Point indices.
+* Finally, a `moveTile(Direction dir)` function that will try to move a tile in a given direction and will return `true` if it succeeds.  This function should implement the procedure outlined above.
+
+Modify the `main()` from step 4 so that `moveTile()` is called if a directional command is entered.  If the move was successful, redraw the field.
 
 ```cpp
 #include <array>
@@ -264,28 +274,16 @@ public:
         std::swap(m_tiles[pt1.y][pt1.x], m_tiles[pt2.y][pt2.x]);
     }
 
-    // if adj. point is invalid, it returns the origin
-    Point getAdjacentPoint(const Point& origin, Direction dir) const
-    {
-        Point adj{ origin.getAdjacentPoint(dir) };
-
-        if (isValidTilePos(adj))
-            return adj;
-
-        // that adj tile is not valid, so return the origin point
-        return origin;
-    }
-
     // returns true if user moved successfully
-    bool moveTiles(Direction dir)
+    bool moveTile(Direction dir)
     {
         Point emptyTile{ getEmptyTilePos() };
-        Point movingTile = getAdjacentPoint(emptyTile, -dir);
-        // we didn't move
-        if (emptyTile == movingTile)
+        Point adj{ emptyTile.getAdjacentPoint(-dir) };
+
+        if (!isValidTilePos(adj))
             return false;
 
-        swapTiles(movingTile, emptyTile);
+        swapTiles(adj, emptyTile);
         return true;
     }
 
@@ -300,17 +298,29 @@ private:
 
 int main()
 {
-    Field field;
+    Field field{};
     std::cout << field;
 
-    char command{' '};
-    while( (command = UserInput::getCommandFromUser()) != 'q')
+    std::cout << "Enter a command: ";
+    while (true)
     {
-        if(UserInput::isValidDirection(command))
+        char ch{ UserInput::getCommandFromUser() };
+
+        // Handle non-direction commands
+        if (ch == 'q')
         {
-            if(field.moveTiles(UserInput::charToDirection(command)))
-                std::cout << field;
+            std::cout << "\n\nBye!\n\n";
+            return 0;
         }
+
+        // Handle direction commands
+        Direction dir{ UserInput::charToDirection(ch) };
+
+        bool userMoved { field.moveTile(dir) };
+        if (userMoved)
+            std::cout << field;
     }
+
+    return 0;
 }
 ```
