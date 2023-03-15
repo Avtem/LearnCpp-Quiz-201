@@ -107,6 +107,13 @@ namespace UserInput
             || ch == 'd'
             || ch == 'q';
     }
+    bool isValidDirection(char ch)
+    {
+        return ch == 'w'
+            || ch == 'a'
+            || ch == 's'
+            || ch == 'd';
+    }
 
     void ignoreLine()
     {
@@ -206,6 +213,53 @@ public:
         return stream;
     }
 
+    Point getEmptyTilePos() const
+    {
+        for (int y = 0; y < SIZE; ++y)
+            for (int x = 0; x < SIZE; ++x)
+                if (m_tiles[y][x].isEmpty())
+                    return { x,y };
+
+        assert(0 && "There is no empty tile in the field!!!");
+        return { -1,-1 };
+    }
+
+    static bool isValidTilePos(Point pt)
+    {
+        return (pt.x >= 0 && pt.x < SIZE)
+            && (pt.y >= 0 && pt.y < SIZE);
+    }
+
+    void swapTiles(Point pt1, Point pt2)
+    {
+        std::swap(m_tiles[pt1.y][pt1.x], m_tiles[pt2.y][pt2.x]);
+    }
+
+    // if adj. point is invalid, it returns the origin
+    Point getAdjacentPoint(const Point& origin, Direction dir) const
+    {
+        Point adj{ origin.getAdjacentPoint(dir) };
+
+        if (isValidTilePos(adj))
+            return adj;
+
+        // that adj tile is not valid, so return the origin point
+        return origin;
+    }
+
+    // returns true if user moved successfully
+    bool moveTiles(Direction dir)
+    {
+        Point emptyTile{ getEmptyTilePos() };
+        Point movingTile = getAdjacentPoint(emptyTile, -dir);
+        // we didn't move
+        if (emptyTile == movingTile)
+            return false;
+
+        swapTiles(movingTile, emptyTile);
+        return true;
+    }
+
 private:
     static const int SIZE = 4;
     Tile m_tiles[SIZE][SIZE]{
@@ -217,7 +271,17 @@ private:
 
 int main()
 {
-    
-    return 0;
+    Field field;
+    std::cout << field;
+
+    char command{' '};
+    while( (command = UserInput::getCommandFromUser()) != 'q')
+    {
+        if(UserInput::isValidDirection(command))
+        {
+            if(field.moveTiles(UserInput::charToDirection(command)))
+                std::cout << field;
+        }
+    }
 }
 ```
