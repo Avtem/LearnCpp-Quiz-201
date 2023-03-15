@@ -222,18 +222,6 @@ public:
             && (pt.y >= 0 && pt.y < SIZE);
     }
 
-    // if adj. point is invalid, it returns the origin
-    Point getAdjacentPoint(const Point& origin, Direction dir) const
-    {
-        Point adj{ origin.getAdjacentPoint(dir) };
-
-        if (isValidTilePos(adj))
-            return adj;
-
-        // that adj tile is not valid, so return the origin point
-        return origin;
-    }
-
     void swapTiles(Point pt1, Point pt2)
     {
         std::swap(m_tiles[pt1.y][pt1.x], m_tiles[pt2.y][pt2.x]);
@@ -251,15 +239,15 @@ public:
     }
 
     // returns true if user moved successfully
-    bool moveTiles(Direction dir)
+    bool moveTile(Direction dir)
     {
         Point emptyTile{ getEmptyTilePos() };
-        Point movingTile = getAdjacentPoint(emptyTile, -dir);
-        // we didn't move
-        if (emptyTile == movingTile)
+        Point adj{ emptyTile.getAdjacentPoint(-dir) };
+
+        if (!isValidTilePos(adj))
             return false;
 
-        swapTiles(movingTile, emptyTile);
+        swapTiles(adj, emptyTile);
         return true;
     }
 
@@ -276,10 +264,12 @@ public:
         for (int i = 0; i < 1000; ++i)
         {
             Point pt0tile{ getEmptyTilePos() };
-            Point ptAdj{ pt0tile };
-            // if random direction lead us to nowhere, try again
-            while (pt0tile == ptAdj)
-                ptAdj = getAdjacentPoint(pt0tile, Direction::getRandomDirection());
+            Point ptAdj{};
+            do
+            {
+                ptAdj = pt0tile.getAdjacentPoint(Direction::getRandomDirection());
+            }
+            while (!isValidTilePos(ptAdj));
 
             swapTiles(pt0tile, ptAdj);
         }
