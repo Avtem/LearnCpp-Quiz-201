@@ -1,4 +1,33 @@
 // 6) Field (find empty space, move Tile based on user input)
+
+F) Now let's allow the player to move the tiles in field we've created!
+First, we should take a closer look at how sliding tiles actually works:
+```text
+     15   1   4
+  2   5   9  12
+  7   8  11  14
+ 10  13   6   3
+```
+When we press 'w' on our keyboard, the only tile that can go up is tile `2`.
+After slide field looks like this:
+```text
+  2  15   1   4
+      5   9  12
+  7   8  11  14
+ 10  13   6   3
+```
+
+So, essentially what happened is we swapped the empty tile with tile `2`. And that's it!
+
+Let's implement the member functions in our `Field` class:
+* A function that returns the position of empty tile as a `Point`
+* A function that will swap two tiles by passing two `Point`s as parameters
+* IsValidTile(Point pos) which will return false if Point lies outside of our field
+* getAdjacentPoint(Point origin, Direction dir) that will return the adjacent point or the original Point in case adjacent Point is not a valid tile
+* A function moveTiles(Direction dir) that will try to move the tiles in given direction and will return `true` if it succeeds
+
+Finally we will need a while loop that will allow us to slide the tiles until user hits 'q', which will also allow us to test our moving functions.
+
 ```cpp
 #include <array>
 #include <cassert>
