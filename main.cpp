@@ -72,16 +72,6 @@ struct Point
     int x{};
     int y{};
 
-    friend bool operator==(Point p1, Point p2)
-    {
-        return p1.x == p2.x && p1.y == p2.y;
-    }
-
-    friend bool operator!=(Point p1, Point p2)
-    {
-        return !(p1 == p2);
-    }
-
     Point getAdjacentPoint(Direction d) const
     {
         switch (d.getType())
@@ -264,11 +254,9 @@ public:
         for (int i = 0; i < 1000; ++i)
         {
             Point pt0tile{ getEmptyTilePos() };
-            Point ptAdj{};
-            do
-            {
+            Point ptAdj{-1,-1};
+            while (!isValidTilePos(ptAdj))
                 ptAdj = pt0tile.getAdjacentPoint(Direction::getRandomDirection());
-            } while (!isValidTilePos(ptAdj));
 
             swapTiles(pt0tile, ptAdj);
         }
