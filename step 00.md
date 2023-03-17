@@ -27,3 +27,7 @@ The goal of the game is to slide tiles around until they are in numerical order,
 ```
 
 Because this is going to be a longer program, we'll develop it in stages.
+
+One more thing: at each step, we'll present two things: a *goal* and *tasks*.  The goal defines the outcome that the step is trying to achieve, along with any additional relevant information.  The tasks provide detail and hints about how to implement the goal.
+
+The tasks will initially be hidden from view, to encourage you to see if you can complete each step using just the goal and sample output or sample program.  If you are unsure how to start, or are feeling stuck, you can unhide the tasks.  They should help get you moving forward.
