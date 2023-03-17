@@ -27,8 +27,8 @@ So, essentially what happened is we swapped the empty tile with tile `2`.
 Let's generalize this procedure.  When the user enters a directional command, we need to:
 * Locate the empty tile.
 * From the empty tile, find the adjacent tile that is in the direction opposite of the direction the user entered.
-* Swap the two tiles.
-* Handle the case where the user enters a direction that is not valid.
+* If the adjacent tile is valid (it's not off the grid), swap the empty tile and adjacent tile.
+* If the adjacent tile is not valid, do nothing.
 
 Implement the following member functions in our `Field` class:
 * A function which returns a bool indicating whether a given Point is valid (within our Field).
