@@ -51,7 +51,6 @@ public:
         :m_type(type)
     {
     }
-
     Type getType() const
     {
         return m_type;
@@ -91,6 +90,7 @@ public:
 
 private:
     Type m_type{};
+
 };
 
 struct Point
@@ -131,13 +131,6 @@ namespace UserInput
             || ch == 's'
             || ch == 'd'
             || ch == 'q';
-    }
-    bool isValidDirection(char ch)
-    {
-        return ch == 'w'
-            || ch == 'a'
-            || ch == 's'
-            || ch == 'd';
     }
 
     void ignoreLine()
@@ -260,6 +253,17 @@ public:
         std::swap(m_tiles[pt1.y][pt1.x], m_tiles[pt2.y][pt2.x]);
     }
 
+    // Compare two fields to see if they are equal
+    friend bool operator==(const Field& f1, const Field& f2)
+    {
+        for (int y = 0; y < SIZE; ++y)
+            for (int x = 0; x < SIZE; ++x)
+                if (f1.m_tiles[y][x].getNum() != f2.m_tiles[y][x].getNum())
+                    return false;
+
+        return true;
+    }
+
     // returns true if user moved successfully
     bool moveTile(Direction dir)
     {
@@ -271,6 +275,29 @@ public:
 
         swapTiles(adj, emptyTile);
         return true;
+    }
+
+    bool playerWon() const
+    {
+        static Field s_solved{};  // generate a solved field
+        return s_solved == *this; // player wins if current field == solved field
+    }
+
+    void randomize()
+    {
+        // just move empty tile randomly 1000 times
+        // (just like you would do in real life)
+        for (int i = 0; i < 1000; ++i)
+        {
+            Point pt0tile{ getEmptyTilePos() };
+            Point ptAdj{};
+            do
+            {
+                ptAdj = pt0tile.getAdjacentPoint(Direction::getRandomDirection());
+            } while (!isValidTilePos(ptAdj));
+
+            swapTiles(pt0tile, ptAdj);
+        }
     }
 
 private:
@@ -285,10 +312,10 @@ private:
 int main()
 {
     Field field{};
+    field.randomize();
     std::cout << field;
 
-    std::cout << "Enter a command: ";
-    while (true)
+    while (!field.playerWon())
     {
         char ch{ UserInput::getCommandFromUser() };
 
@@ -307,6 +334,7 @@ int main()
             std::cout << field;
     }
 
+    std::cout << "\n\nYou won!\n\n";
     return 0;
 }
 ```
