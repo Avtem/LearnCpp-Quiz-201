@@ -14,6 +14,7 @@ Now that we can randomize our field, let's allow user to make infinite amount of
 
 If you tried to play the game and solved it - you will notice that nothing happens and you still can move the tiles. Let's change that. We will need to detect when a field is a solved field. Luckily, when we create an object of class `Field` it's already in solved state! So we can just implement an operator== in our Field class which will return true if all the tiles are the same.
 * Implement operator== in `Field` class
+* Add `playerWon()` method in `Field` class that will return true if the field is solved. You will need to use `operator==` you implemented earlier
 
 Finally, check for win condition in `main()` and if user wins, print the message `\n\nYou won!\n\n`.
 Also let's add an exit command that we created earlier which will allow user to quit the program.
