@@ -20,7 +20,11 @@ Also let's add an exit command that we created earlier which will allow user to 
 [/tasks]
 
 Here is the final code of our 15 puzzle game:
+
+
 [solution]
+
+```cpp
 #include <array>
 #include <cassert>
 #include <iostream>
@@ -305,4 +309,5 @@ int main()
 
     return 0;
 }
+```
 [/solution]
