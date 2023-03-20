@@ -1,24 +1,26 @@
-G) Goal: Finalize the game (randomize the field, allow user to move tiles until they win).
+G) Goal: Finalize the game (randomize the field, allow user to move tiles infinitely until they win).
 
 [tasks]
 
 Now it's time to finalize our game and make it playable.
-First of all - upon creation, our field is always in a solved state. Of course, we want to make a unique random field that would be interesting to solve, but how do we do that? 
-You might be tempted to create a vector that contains numbers from 0 to 15 and simply randomize it using `std::shuffle()` or something similar, but this approach will not work. Why? Because if we take a real-world 15 puzzle and swap two tiles that are not adjacent it will disrupt the correct sequence of the tiles and no matter how much you try you will never solve the puzzle. That is why you randomize 15 puzzle in the real world by sliding tiles in a random direction, not dismantling it and putting tiles in random places.
+Right now our field is always in a solved state upon creation. Of course, we want to make a unique random field that would be interesting to solve, but how do we do that? 
+You might be tempted to create a vector that contains numbers from 0 to 15 and simply randomize it using `std::shuffle()` or something similar, but this approach will not work. Why? Because if we take a real-world 15 puzzle and swap two tiles it will disrupt the correct sequence of the tiles and no matter how much you try you will never solve the puzzle. That is why you randomize a 15 puzzle in the real world by **sliding** tiles, not by dismantling the puzzle and putting tiles in random order.
 
-There is an algorithm, that allows you to check whether a sequence of 16 numbers is a correct 15 puzzle or not, which can seem pretty complicated to some programmers, especially if you never implemented it before.
-But in this quiz, we encourage you to take another path - much simpler and similar to the real-world 15 puzzle. We will just take a solved puzzle with the correct sequence and slide tiles in random directions 1000 times. You might think that this algorithm is not very efficient and you will be right, but modern computers can make millions of calculations within a second! So sliding tiles 1000 times will take at most 50 milliseconds on an average computer.
+There exists an algorithm, that allows you to check whether a sequence of 16 numbers is a correct 15 puzzle sequence or not. But that algorithm can be pretty challenging to comprehend and implement.
+This is why we encourage you to take another path - much simpler and similar to the real-world 15 puzzle. We will take a solved puzzle (with the correct sequence) and slide tiles in random directions 1000 times. You might think that such approach is not very efficient and you will be right, but modern computers can make millions of calculations within a second! So sliding tiles 1000 times will take at most 50 milliseconds on an average computer. And don't forget that this will happen only once upon launching the game.
+
+Now that we can randomize our field, let's allow the user to make an infinite amount of moves. It is achieved by creating a loop which condition always evaluates to `true`. You break out of the loop only when user wants to quit or the program crashes. Such an infinite loop is often called a "game loop".  
+Each iteration ask user for the input and depending on what command they type in react accordingly - slide a tile, ignore an invalid command or quit the game.
+
+If you would try to play the game at this point - you would notice that after all tiles are in the correct place - nothing happens and you still can move the tiles. Let's change that. We will need to detect when a field is a solved state. Luckily, when we create an object of class `Field` it's already in a solved state! So we can just implement an operator== in our Field class which will return true if all the tiles are the same.
+
+Finally, check for the win condition in `main()` and if the user wins, break the loop and print the message `\n\nYou won!\n\n`.
+
+Let's summarize things we need to implement:
 * Add `randomize()` method to `Field` class
-
-Now that we can randomize our field, let's allow the user to make an infinite amount of steps. Such an infinite loop is often called a "game loop".
 * Implement a game loop in `main()` which will allow user to infinitely move tiles
-
-If you tried to play the game and solved it - you will notice that nothing happens and you still can move the tiles. Let's change that. We will need to detect when a field is a solved field. Luckily, when we create an object of class `Field` it's already in a solved state! So we can just implement an operator== in our Field class which will return true if all the tiles are the same.
-* Implement operator== in `Field` class
+* Implement operator== in `Field` class which will compare if tiles of two given fields are identical
 * Add `playerWon()` method in `Field` class that will return true if the field is solved. You will need to use `operator==` you implemented earlier
-
-Finally, check for the win condition in `main()` and if the user wins, print the message `\n\nYou won!\n\n`.
-Also, let's add an exit command that we created earlier which will allow the user to quit the program.
 
 [/tasks]
 
