@@ -1,6 +1,7 @@
 G) Goal: Finalize the game (randomize the field, allow user to move tiles until they win).
 
 [tasks]
+
 Now it's time to finalize our game and make it playable.
 First of all - upon creation, our field is always in a solved state. Of course, we want to make a unique random field that would be interesting to solve, but how do we do that? 
 You might be tempted to create a vector that contains numbers from 0 to 15 and simply randomize it using `std::shuffle()` or something similar, but this approach will not work. Why? Because if we take a real-world 15 puzzle and swap two tiles that are not adjacent it will disrupt the correct sequence of the tiles and no matter how much you try you will never solve the puzzle. That is why you randomize 15 puzzle in the real world by sliding tiles in a random direction, not dismantling it and putting tiles in random places.
@@ -18,6 +19,7 @@ If you tried to play the game and solved it - you will notice that nothing happe
 
 Finally, check for the win condition in `main()` and if the user wins, print the message `\n\nYou won!\n\n`.
 Also, let's add an exit command that we created earlier which will allow the user to quit the program.
+
 [/tasks]
 
 Here is the final code of our 15 puzzle game:
