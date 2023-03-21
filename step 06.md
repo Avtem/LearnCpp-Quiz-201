@@ -1,4 +1,4 @@
-E) Our game board is a 4x4 grid of `Tile`, which we store in two-dimensional array member `m_tiles` of the `Field` class.  We will access a given tile using its {x, y} coordinates.  For example, the top left tile has coordinate {0, 0}.  The tile to the right of that has coordinate {1, 0} (x becomes 1, y stays 0).  The tile one down from that has coordinate {1, 1}.
+F) Our game board is a 4x4 grid of `Tile`, which we store in two-dimensional array member `m_tiles` of the `Field` class.  We will access a given tile using its {x, y} coordinates.  For example, the top left tile has coordinate {0, 0}.  The tile to the right of that has coordinate {1, 0} (x becomes 1, y stays 0).  The tile one down from that has coordinate {1, 1}.
 
 Since we'll be working with coordinates a lot, let's create an object to help us manage coordinates as {x, y} pairs of values.
 
