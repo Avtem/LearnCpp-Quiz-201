@@ -1,4 +1,4 @@
-A) Goal: The first class we are going to implement will be `Tile` class.  Each `Tile` will represent either one of the numbered tiles on our 4x4 grid, or the missing tile.  Each tile will store a single value, representing the value it displays.  So that tiles are aligned properly when printed in a grid, each tile will print 4 characters: one or two spaces, the display value, and then another space.
+B) Goal: The first class we are going to implement will be `Tile` class.  Each `Tile` will represent either one of the numbered tiles on our 4x4 grid, or the missing tile.  Each tile will store a single value, representing the value it displays.  So that tiles are aligned properly when printed in a grid, each tile will print 4 characters: one or two spaces, the display value, and then another space.
 
 [solution tasks]
 Our `Tile` class should have this functionality:
