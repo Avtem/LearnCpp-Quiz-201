@@ -1,4 +1,4 @@
-F) In this step, we'll finally implement the ability for players to move the tiles in field.
+G) In this step, we'll finally implement the ability for players to move the tiles in field.
 
 First, we should take a closer look at how sliding tiles actually works:
 
