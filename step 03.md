@@ -1,4 +1,4 @@
-B) Next, we're going to implement the 4x4 grid of tiles that represents the puzzle.  By the end of this step, we'll be able to print our puzzle to the console.
+C) Next, we're going to implement the 4x4 grid of tiles that represents the puzzle.  By the end of this step, we'll be able to print our puzzle to the console.
 
 Create a class called `Field` that contains a 4x4 array of `Tile`.  Store the size of the grid in a (constexpr) symbolic constant, to avoid magic numbers, and in case we want to change the size later.
 
