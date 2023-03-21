@@ -1,4 +1,4 @@
-C) Next, we need some way for the user to input commands, so that we can work towards our next goal of being able to slide the puzzle Tiles around.
+D) Next, we need some way for the user to input commands, so that we can work towards our next goal of being able to slide the puzzle Tiles around.
 
 Our game will support 5 commands, each of which will be input as a single character:
 * 'w' - slide tile up
