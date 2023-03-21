@@ -1,4 +1,4 @@
-G) Goal: Finalize the game (randomize the field, allow user to move tiles infinitely until they win).
+H) Goal: Finalize the game (randomize the field, allow user to move tiles infinitely until they win).
 
 [tasks]
 
