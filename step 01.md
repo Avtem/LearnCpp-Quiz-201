@@ -1,0 +1,37 @@
+A) Because this is going to be a bigger program, let's start with a design exercise.
+
+Goal: Think about how your program will be structured.  We will do this in two steps.
+
+Step 1: What are the top-level things that your program needs to do? (e.g. display the game board)
+
+[solution]
+* Display the game board
+* Display an individual tile
+* Randomize the starting state
+* Handle user input
+* Slide tiles
+* Determine if user won
+* Allow the user to quit
+
+[/solution]
+
+Step 2: What classes or namespaces will you use to implement the items outlined in Step 1?  Also, what will your main() function do?  Think about what helper classes or namespaces that you will need.
+
+You can create a diagram, or use a table like this:
+| Class/Namespace/main | Implements top-level items | Members | Dependencies | primary or helper? |
+| --- | --- | --- | --- | --- |
+| class Field | Display board the game board<br>... | ... | ... | primary |
+
+[solution]
+| Class/Namespace/main | Implements top-level items | Members (type) | Dependencies | Primary or helper? |
+| --- | --- | --- | --- | --- | 
+| class Field | Display the game board<br>Randomize the starting state<br>Slide tiles<br>Determine if user won | 2d array of Tile | Random, Tile, Point, Direction | primary |
+| class Tile | Display an individual tile | int display number | none | primary |
+| namespace UserInput | Get user input | none | none | primary |
+| function main() | Main game logic loop<br>allow user to quit | none | Field, UserInput | primary |
+| class Point | Used to index the game board tiles | int x-axis and y-axis coordinates none | none | helper |
+| class Direction | Helper for directional commands to interface with Field | enum direction | none | helper |
+
+// We probably want additional text here explaining these choices
+
+[/solution]
