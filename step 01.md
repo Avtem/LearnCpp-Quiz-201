@@ -1,6 +1,6 @@
 A) Because this is going to be a bigger program, let's start with a design exercise.
 
-Goal: Think about how your program will be structured.  We will do this in two steps.
+Goal: Document the key requirements for this program, and how your program will be structured.  We will do this in two steps.
 
 Step 1: What are the top-level things that your program needs to do? (e.g. display the game board)
 
@@ -8,7 +8,8 @@ Step 1: What are the top-level things that your program needs to do? (e.g. displ
 * Display the game board
 * Display an individual tile
 * Randomize the starting state
-* Handle user input
+* Get commands from user
+* Handle invalid input
 * Slide tiles
 * Determine if user won
 * Allow the user to quit
@@ -18,43 +19,50 @@ Step 1: What are the top-level things that your program needs to do? (e.g. displ
 Step 2: What classes or namespaces will you use to implement the items outlined in Step 1?  Also, what will your main() function do?  Think about what helper classes or namespaces that you will need.
 
 You can create a diagram, or use two tables like this:
-| Primary class/namespace/main | Implements top-level items | Members | Dependencies | 
-| --- | --- | --- | --- |
-| class Field | Display board the game board<br>... | ... | ... | 
-| function main | Main game logic loop<br>... | ... | ... | 
+| Primary class/namespace/main | Implements top-level items | Members |
+| --- | --- | --- |
+| class Field | Display board the game board<br>... | ... |
+| function main | Main game logic loop<br>... | ... |
 
-| Helper class/namespace | What does this help with? | Members | Dependencies | 
-| --- | --- | --- | --- |
-| ... | ... | ... | ... | 
+| Helper class/namespace | What does this help with? | Members |
+| --- | --- | --- |
+| ... | ... | ... |
 
 
 [solution]
-| Class/Namespace/main | Implements top-level items | Members (type) | Dependencies |
-| --- | --- | --- | --- |
-| class Field | Display the game board<br>Randomize the starting state<br>Slide tiles<br>Determine if user won | 2d array of Tile | Random, Tile, Point, Direction | 
-| class Tile | Display an individual tile | int display number | none |
-| namespace UserInput | Get user input | none | none | 
-| function main() | Main game logic loop<br>allow user to quit | none | Field, UserInput |
 
-| Class/Namespace | What does this help with? | Members (type) | Dependencies |
-| --- | --- | --- | --- |
-| class Point | Indexing the game board tiles | int x-axis and y-axis coordinates none | none |
-| class Direction | Make working with Directional commands easier and more intuitive  | enum direction | none |
+| Primary class/Namespace/main | Implements top-level items | Members (type) |
+| --- | --- | --- |
+| class Field | Display the game board<br>Randomize the starting state<br>Slide tiles<br>Determine if user won | 2d array of Tile |
+| class Tile | Display an individual tile | int display number |
+| namespace UserInput | Get commands from user<br>Handle invalid input | none |
+| function main() | Main game logic loop<br>Allow user to quit | none |
 
-<br></br>
-Let's talk about **why** we chose such approach to implement this game.
+| Helper class/Namespace | What does this help with? | Members (type) | 
+| --- | --- | --- |
+| class Point | Indexing the game board tiles | int x-axis and y-axis coordinates |
+| class Direction | Make working with Directional commands easier and more intuitive  | enum direction |
 
-*Class Field* - if you look at real-game puzzle, it is a very distinct 4x4 board of tiles that are the same size. The main purpose of this class is to store a 2-dimentional array of Tiles that will allow us to easily get and set our tiles. This class is also responsible for randomizing, moving and displaying all our tiles and checking whether our field (board) is solved.
+<br/>
+Here is some rationale behind the choices above.
 
-*Class Tile* - it also makes sense to create a class that would represent a single tile. We can display a single tile to the screen and also check the number it holds.
+* `class Field`: Our game is a distinct 4x4 grid of tiles.  The main purpose of this class is to store and manage the 2-dimensional array of tiles. This class is also responsible for randomizing, moving tiles, displaying the board, and checking whether our board is solved.
 
-*Namespace UserInput* - functions in this namespace help us to get a valid input from the user without worrying about getting input that does not make sense for our program (like numbers or words).
+* `class Tile`: This class represents a single tile within the game board.  Using a class here allows us to overload the output operator to output a tile in the format we desire.  It also allows us to have well-named member functions that will increase the readability of code related to a single tile.
 
-*Function main()* - this is the place where we write the code at the top abstract level like: create a field, randomize it and ask for input until user wins or exists.
+* `namespace UserInput`: We functions to get input from the user, to check whether the user input is valid, and to handle invalid input.  Because this doesn't have any state, we don't need a class here.
 
-*Class Point and Direction* - purpose of these two can be not obvious for the first glance, but from our experience we found out that making a class for Direction greatly improves readability of our code. Class Point is useful because our game is a grid of tiles, which we often refer to by x-y coordinates like: {0,0} - top left tile, {1,0} - next tile to the right, etc. In conjunction with Direction class we can easily retrieve adjacent tiles which makes our code very easy to read and modify.
+* `function main()`: This is where our main game loop will be written.  This will handle setup of the game board, coordinate retrieving user input and command processing, and handle exit conditions (when the user wins or enters the quit command).
 
-Do not worry if you could not understand why we decided to implement those particular classes/namespaces. Seing what should be a class and what should not comes inevitably with a practice.
-Now let's code!
+We also will make use of two helper classes.  The need for these classes may not be obvious at first glance, so don't worry if you didn't come up with anything similar.  Often the need for (or benefit of) helper classes isn't apparent into you get further into the implementation of your program.
+
+* `class Point`: Accessing a specific tile in our 2d array of tiles will require 2 indices.  We can think of these as { x-axis, y-axis } index pairs.  This Point class implements such an index pair, to make it easy to pass or return a pair of indices.
+
+* `class Direction`: The user will be entering single-letter (char) commands on the keyboard to slide tiles in cardinal directions (e.g. `'w'`=up, `'a'`=left).  Converting these char commands into a Direction object (representing a cardinal direction) will make our code more intuitive and prevent our code from being littered with char literals (`Direction::left` is more meaningful than `'a'`).
+
+If you had a hard time with this exercise, that's okay.  The goal here was mainly to get you thinking about what you're going to do before you start doing it.
+
+Now, it's time to get implementing!
 
 [/solution]
+
