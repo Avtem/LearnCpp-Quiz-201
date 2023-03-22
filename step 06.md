@@ -1,11 +1,17 @@
-F) Our game board is a 4x4 grid of `Tile`, which we store in two-dimensional array member `m_tiles` of the `Field` class.  We will access a given tile using its {x, y} coordinates.  For example, the top left tile has coordinate {0, 0}.  The tile to the right of that has coordinate {1, 0} (x becomes 1, y stays 0).  The tile one down from that has coordinate {1, 1}.
+F) Goal: Implement a class `Point` with two data members for x and y axes, a member function that will return the adjacent Point (depending on Direction parameter) and comparison operators (operator==, operator!=) that will compare two Point objects.
 
-Since we'll be working with coordinates a lot, let's create an object to help us manage coordinates as {x, y} pairs of values.
+[tasks]
+
+Our game board is a 4x4 grid of `Tile`, which we store in two-dimensional array member `m_tiles` of the `Field` class.  We will access a given tile using its {x, y} coordinates.  For example, the top left tile has coordinate {0, 0}.  The tile to the right of that has coordinate {1, 0} (x becomes 1, y stays 0).  The tile one down from that has coordinate {1, 1}.
+
+Since we'll be working with coordinates a lot, we will create a class to help us manage coordinates as {x, y} pairs of values.
 
 Implement a class type named `Point`.  This should contain:
 * Two data members to store the x-axis and y-axis coordinates.
 * An overloaded `operator==` and `operator!=` to compare two sets of coordinates.
 * A member function `Point getAdjacentPoint(Direction)`.   This should return a `Point` that is adjacent to the implicit Point object in the direction of `Direction`.  For example, `Point{1, 1}.getAdjacentPoint(Direction::right)` == `Point{2, 1}`.
+
+[/tasks]
 
 The following code should run and print “true” for every test-case:
 
