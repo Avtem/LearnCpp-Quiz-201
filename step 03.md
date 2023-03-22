@@ -1,6 +1,6 @@
 C) Goal: Create a `Field` class, that will represent 4x4 grid of tiles. A newly created game board should be in the solved state. Store the size of the grid (4) in a `constexpr` symbolic constant, to avoid magic numbers. To display the board, first print `g_consoleLines` (defined in code snippet below) empty lines and then print the board itself. Printing empty lines makes an illusion that that field always stays at the bottom of the console.
 
-[solution tasks]
+[tasks]
 
 When you buy a physical version of these puzzles, the puzzles typically start in the solved state -- you have to manually mix them up (by sliding tiles around) before trying to solve them.  Being able to generate solved field will also help us to easily check whether player won or not. So let's initialize our Field to the solved puzzle state.  We'll mix up the tiles in in a later step.
 
