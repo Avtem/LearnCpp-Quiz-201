@@ -1,6 +1,6 @@
 C) Next, we're going to implement the 4x4 grid of tiles that represents the puzzle.  By the end of this step, we'll be able to print our puzzle to the console.
 
-Create a class called `Field` that contains a 4x4 array of `Tile`.  Store the size of the grid in a (constexpr) symbolic constant, to avoid magic numbers, and in case we want to change the size later.
+Create a class called `Field` that contains a 4x4 array of `Tile`.  Store the size of the grid in a (constexpr) symbolic constant, to avoid magic numbers.
 
 When you buy a physical version of these puzzles, the puzzles typically start in the solved state -- you have to manually mix them up (by sliding tiles around) before trying to solve them.  Being able to generate solved field will also help us to easily check whether player won or not. So let's initialize our Field to the solved puzzle state.  We'll mix up the tiles in in a later step.
 
