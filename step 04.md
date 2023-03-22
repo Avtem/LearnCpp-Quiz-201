@@ -1,13 +1,15 @@
-D) Next, we need some way for the user to input commands, so that we can work towards our next goal of being able to slide the puzzle Tiles around.
+D) Goal: Allow the user to repeatedly input commands by creating namespace `UserInput`. It will help us to process the user input and to slide the puzzle Tiles around in the next step.
 
-Our game will support 5 commands, each of which will be input as a single character:
+These are the 5 commands our game will support (each of which will be input as a single character):
 * 'w' - slide tile up
 * 'a' - slide tile left
 * 's' - slide tile down
 * 'd' - slide tile right
 * 'q' - quit game
 
-To keep all of our input routines together, we'll put them in a namespace named `UserInput`.
+Right now, for commands `w, a, s, d` print `"Valid command: "` and the character the user input. For command `q` print `"\n\nBye!\n\n"` and quit the app
+
+[solution tasks]
 
 Implement the `UserInput` namespace:
 * Create a function named `getCommandFromUser()`.  Read in a single character from the user.  If the character is not a valid game command, clear any additional extraneous input, and read in another character from the user.  Repeat until a valid game command is entered.  Return the valid command to the caller.  
@@ -16,8 +18,10 @@ Implement the `UserInput` namespace:
 Update the `main()` function from the prior example, so that it does the following:
 * Prints the solved field
 * Repeatedly accepts game commands
-* If the user inputs `q`, print "\n\nBye!\n\n" and quit the app.
-* If the user inputs any other valid game command, print "Valid command: " and the character the user input.
+* If the user inputs `q`, print `"\n\nBye!\n\n"` and quit the app.
+* If the user inputs any other valid game command, print `"Valid command: "` and the character the user input.
+
+[/solution]
 
 The output of the program should match the following:
 
