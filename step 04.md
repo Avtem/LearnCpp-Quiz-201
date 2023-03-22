@@ -9,7 +9,7 @@ These are the 5 commands our game will support (each of which will be input as a
 
 Right now, for commands `w, a, s, d` print `"Valid command: "` and the character the user input. For command `q` print `"\n\nBye!\n\n"` and quit the app
 
-[solution tasks]
+[tasks]
 
 Implement the `UserInput` namespace:
 * Create a function named `getCommandFromUser()`.  Read in a single character from the user.  If the character is not a valid game command, clear any additional extraneous input, and read in another character from the user.  Repeat until a valid game command is entered.  Return the valid command to the caller.  
