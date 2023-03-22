@@ -50,7 +50,7 @@ Here is some rationale behind the choices above.
 
 * `class Tile`: This class represents a single tile within the game board.  Using a class here allows us to overload the output operator to output a tile in the format we desire.  It also allows us to have well-named member functions that will increase the readability of code related to a single tile.
 
-* `namespace UserInput`: We functions to get input from the user, to check whether the user input is valid, and to handle invalid input.  Because this doesn't have any state, we don't need a class here.
+* `namespace UserInput`: This namespace has functions to get input from the user, to check whether the user input is valid, and to handle invalid input.  Because this doesn't have any state, we don't need a class here.
 
 * `function main()`: This is where our main game loop will be written.  This will handle setup of the game board, coordinate retrieving user input and command processing, and handle exit conditions (when the user wins or enters the quit command).
 
