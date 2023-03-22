@@ -1,4 +1,6 @@
-G) In this step, we'll finally implement the ability for players to move the tiles in field.
+G) Goal: Add the ability for players to move the tiles in field. Implement it by adding a member function `moveTile(Direction)` to the class `Field`.
+
+[tasks]
 
 First, we should take a closer look at how sliding tiles actually works:
 
@@ -37,6 +39,10 @@ Implement the following member functions in our `Field` class:
 * Finally, a `moveTile(Direction dir)` function that will try to move a tile in a given direction and will return `true` if it succeeds.  This function should implement the procedure outlined above.
 
 Modify the `main()` from step 4 so that `moveTile()` is called if a directional command is entered.  If the move was successful, redraw the field.
+
+[/tasks]
+
+[solution]
 
 ```cpp
 #include <array>
@@ -324,3 +330,5 @@ int main()
     return 0;
 }
 ```
+
+[/solution]
