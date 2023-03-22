@@ -18,6 +18,7 @@ Once the user has solved the puzzle, the program should print `"\n\nYou won!\n\n
 * Implement operator== in `Field` class which will compare if tiles of two given fields are identical.
 * Add `playerWon()` member function to the `Field` class that will return true if the current game board is solved.  You can use the `operator==` you implemented to compare the current game board against a solved game board.  Remember that `Field` objects start in the solved state, so if you need a solved game board, just value initialize a `Field` object!
 * Update your main() function to integrate randomize() and playerWon().
+
 [/tasks]
 
 Here is the full solution for our 15 puzzle game:
