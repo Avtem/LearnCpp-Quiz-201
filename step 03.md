@@ -8,7 +8,7 @@ The Field class should have the following functions:
 * A default constructor
 * An overloaded `operator<<` which will simply draw our field to the screen. First, it prints N blank lines (thus creating an illusion that field always stays at the bottom of the console), then prints the 4x4 grid of tiles.  Use `g_consoleLines` for the value of N (see sample code below for the definition of `g_consoleLines`).
 
-[/solution]
+[/tasks]
 
 The following program should run:
 ```cpp
