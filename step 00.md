@@ -26,6 +26,8 @@ The goal of the game is to slide tiles around until they are in numerical order,
  13  14  15   
 ```
 
+[Try to play this game](https://15puzzle.netlify.app/), so you will have a better understanding what we are trying to make.
+
 Because this is going to be a longer program, we'll develop it in stages.
 
 One more thing: at each step, we'll present two things: a *goal* and *tasks*.  The goal defines the outcome that the step is trying to achieve, along with any additional relevant information.  The tasks provide detail and hints about how to implement the goal.
