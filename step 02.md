@@ -1,6 +1,6 @@
 B) Goal: First we will start by showing individual tiles on the screen.
 
-Every tile in our program will be an object of a class that we will call `Tile`. Each `Tile` will represent either one of the numbered tiles on our 4x4 grid, or the missing tile. This class should be able to do three things: store the number it represents, being able to tell whether the tile is a missing tile and draw the tile on the screen with appropriate spacing, so that following tile won't stick to the previous one.
+Every tile in our program will be an object of a class that we will call `Tile`. Each `Tile` will represent either one of the numbered tiles on our 4x4 grid, or the missing tile. This class should be able to do three things: store the number it holds, being able to tell whether the tile is a missing tile and draw the tile on the screen with appropriate spacing, so that following tile won't stick to the previous one.
 
 [tasks]
 Our `Tile` class should have this functionality:
