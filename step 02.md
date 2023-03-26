@@ -1,13 +1,16 @@
-B) Goal: The first class we are going to implement will be `Tile` class.  Each `Tile` will represent either one of the numbered tiles on our 4x4 grid, or the missing tile.  Each tile will store a single value, representing the value it displays.  So that tiles are aligned properly when printed in a grid, each tile will print 4 characters: one or two spaces, the display value, and then another space.
+B) Goal: First we will start by showing individual tiles on the screen.
 
-[solution tasks]
+Every tile in our program will be an object of a class that we will call `Tile`. Each `Tile` will represent either one of the numbered tiles on our 4x4 grid, or the missing tile. This class should be able to do three things: store the number it represents, being able to tell whether the tile is a missing tile and draw the tile on the screen with appropriate spacing, so that following tile won't stick to the previous one.
+
+[tasks]
 Our `Tile` class should have this functionality:
 * A default constructor.
 * A constructor that lets us create a Tile with a display value.  Because we are not using `0` as a display value, we can use value `0` to identify our missing tile. 
 * A `getNum()` access function that returns the value held by the tile.
 * An `isEmpty()` member function that returns a bool indicating whether the current tile is the missing tile.
 * An overloaded `operator<<` that will display the value held by the tile.
-[/solution]
+
+[/tasks]
 
 The following code should compile and produce the output result you can see below the code:
 ```cpp
