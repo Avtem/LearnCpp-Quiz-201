@@ -2,13 +2,14 @@ C) Goal: Display the entire board (4x4 grid of tiles) on the screen. After seque
 
 Create a `Board` class, that will represent 4x4 grid of tiles. A newly created `Board` object should be in the solved state. Store the size of the grid (4) in a `constexpr` symbolic constant, to avoid magic numbers. To display the board, first print `g_consoleLines` (defined in code snippet below) empty lines and then print the board itself. Doing so will make sure that after sequential draws the board remains stationary and only current board is visible on the screen.
 
-Why initiate a Board in solved state?  
+Why initiate a Board in the solved state?  
 \- When you buy a physical version of these puzzles, the puzzles typically start in the solved state -- you have to manually mix them up (by sliding tiles around) before trying to solve them.  Being able to generate solved board will also help us to easily check whether player won or not. Mixing up the tiles will be in a later step.
 
 [tasks]
-The Board class should have the following functions:
+The `Board` class should have the following functionality:
+* A two-dimentional array of `Tile` objects, which will hold our 16 numbers
 * A default constructor
-* An overloaded `operator<<` which will simply draw our board to the screen. First, it prints N blank lines (thus creating an illusion that board always stays at the bottom of the console), then prints the 4x4 grid of tiles.  Use `g_consoleLines` for the value of N (see sample code below for the definition of `g_consoleLines`).
+* An overloaded `operator<<` which will simply draw our board to the screen. First, it prints N blank lines, then prints the 4x4 grid of tiles.  Use `g_consoleLines` for the value of N (see sample code below for the definition of `g_consoleLines`).
 
 [/tasks]
 
