@@ -1,6 +1,4 @@
-G) Goal: Add the ability for players to move the tiles in field. Implement it by adding a member function `moveTile(Direction)` to the class `Field`.
-
-[tasks]
+G) Goal: Add the ability for players to slide the tiles on the board.
 
 First, we should take a closer look at how sliding tiles actually works:
 
@@ -15,7 +13,7 @@ Given a puzzle state that looks like this:
 
 When the user enters 'w' on the keyboard, the only tile that can go up is tile `2`.
 
-After moving the tile, the field looks like this:
+After moving the tile, the board looks like this:
 
 ```text
   2  15   1   4
@@ -32,13 +30,17 @@ Let's generalize this procedure.  When the user enters a directional command, we
 * If the adjacent tile is valid (it's not off the grid), swap the empty tile and adjacent tile.
 * If the adjacent tile is not valid, do nothing.
 
-Implement the following member functions in our `Field` class:
-* A function which returns a bool indicating whether a given Point is valid (within our Field).
+Implement this by adding a member function `moveTile(Direction)` to the class `Board`.  Add this to your game loop from step E.  If the user successfully slides a tile, the game should redraw the updated board.
+
+[tasks]
+
+Implement the following member functions in our `Board` class:
+* A function which returns a bool indicating whether a given Point is valid (within our Board).
 * A function that finds and returns the position of empty tile as a `Point`.  We could just keep track of where the empty tile is, but that introduces a class invariant, and finding the empty tile whenever we need it isn't that expensive.
 * A function that will swap two tiles given their Point indices.
-* Finally, a `moveTile(Direction dir)` function that will try to move a tile in a given direction and will return `true` if it succeeds.  This function should implement the procedure outlined above.
+* A `moveTile(Direction dir)` function that will try to move a tile in a given direction and will return `true` if it succeeds.  This function should implement the procedure outlined above.
 
-Modify the `main()` from step 4 so that `moveTile()` is called if a directional command is entered.  If the move was successful, redraw the field.
+Modify the `main()` from step E so that `moveTile()` is called if a directional command is entered.  If the move was successful, redraw the board.
 
 [/tasks]
 
@@ -51,7 +53,7 @@ Modify the `main()` from step 4 so that `moveTile()` is called if a directional 
 #include <numeric>
 #include "Random.h"
 
-// Increase amount of new lines if your field isn't
+// Increase amount of new lines if your board isn't
 // at the very bottom of the console
 constexpr int g_consoleLines{ 25 };
 
@@ -227,11 +229,11 @@ private:
     int m_num{};
 };
 
-class Field
+class Board
 {
 public:
 
-    Field() = default;
+    Board() = default;
 
     static void printEmptyLines(int count)
     {
@@ -239,10 +241,10 @@ public:
             std::cout << '\n';
     }
 
-    friend std::ostream& operator<<(std::ostream& stream, const Field& field)
+    friend std::ostream& operator<<(std::ostream& stream, const Board& board)
     {
         // Before drawing always print some empty lines
-        // so that only one field appears at a time
+        // so that only one board  appears at a time
         // and it's always shown at the bottom of the window
         // because console window scrolls automatically when there is no
         // enough space. 
@@ -251,7 +253,7 @@ public:
         for (int y = 0; y < SIZE; ++y)
         {
             for (int x = 0; x < SIZE; ++x)
-                stream << field.m_tiles[y][x];
+                stream << board.m_tiles[y][x];
             stream << '\n';
         }
 
@@ -265,7 +267,7 @@ public:
                 if (m_tiles[y][x].isEmpty())
                     return { x,y };
 
-        assert(0 && "There is no empty tile in the field!!!");
+        assert(0 && "There is no empty tile in the board!!!");
         return { -1,-1 };
     }
 
@@ -304,8 +306,8 @@ private:
 
 int main()
 {
-    Field field{};
-    std::cout << field;
+    Board board{};
+    std::cout << board;
 
     std::cout << "Enter a command: ";
     while (true)
@@ -322,9 +324,9 @@ int main()
         // Handle direction commands
         Direction dir{ UserInput::charToDirection(ch) };
 
-        bool userMoved { field.moveTile(dir) };
+        bool userMoved { board.moveTile(dir) };
         if (userMoved)
-            std::cout << field;
+            std::cout << board;
     }
 
     return 0;
