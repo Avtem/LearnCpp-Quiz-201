@@ -1,16 +1,16 @@
-F) Goal: Implement a class `Point` with two data members for x and y axes, a member function that will return the adjacent Point (depending on Direction parameter) and comparison operators (operator==, operator!=) that will compare two Point objects.
+F) Goal: Implement a helper class that will make it easier for us to index the tiles in our game board.
+
+Our game board is a 4x4 grid of `Tile`, which we store in two-dimensional array member `m_tiles` of the `Board` class.  We will access a given tile using its {x, y} coordinates.  For example, the top left tile has coordinate {0, 0}.  The tile to the right of that has coordinate {1, 0} (x becomes 1, y stays 0).  The tile one down from that has coordinate {1, 1}.
+
+Since we'll be working with coordinates a lot, create a helper class named `Point` that stores an {x, y} pair of coordinates.  We should be able to compare two Point objects for equality and inequality.  Also implement a member function named `getAdjacentPoint` that takes a Direction object as a parameter and returns the Point in that direction.  For example, `Point{1, 1}.getAdjacentPoint(Direction::right)` == `Point{2, 1}`.
 
 [tasks]
-
-Our game board is a 4x4 grid of `Tile`, which we store in two-dimensional array member `m_tiles` of the `Field` class.  We will access a given tile using its {x, y} coordinates.  For example, the top left tile has coordinate {0, 0}.  The tile to the right of that has coordinate {1, 0} (x becomes 1, y stays 0).  The tile one down from that has coordinate {1, 1}.
-
-Since we'll be working with coordinates a lot, we will create a class to help us manage coordinates as {x, y} pairs of values.
-
-Implement a class type named `Point`.  This should contain:
+Implement a struct named `Point`.  This should contain:
 * Two data members to store the x-axis and y-axis coordinates.
 * An overloaded `operator==` and `operator!=` to compare two sets of coordinates.
-* A member function `Point getAdjacentPoint(Direction)`.   This should return a `Point` that is adjacent to the implicit Point object in the direction of `Direction`.  For example, `Point{1, 1}.getAdjacentPoint(Direction::right)` == `Point{2, 1}`.
+* A const member function `Point getAdjacentPoint(Direction)` that returns the Point in the direction of the Direction parameter.  We do not need to do any validity checking here.
 
+We're using a struct instead of a class here because Point is simple bundle of data that would benefit little from being encapsulated.
 [/tasks]
 
 The following code should run and print “true” for every test-case:
@@ -41,7 +41,7 @@ int main()
 #include <numeric>
 #include "Random.h"
 
-// Increase amount of new lines if your field isn't
+// Increase amount of new lines if your board isn't
 // at the very bottom of the console
 constexpr int g_consoleLines{ 25 };
 
@@ -199,6 +199,7 @@ public:
             stream << "    ";
         return stream;
     }
+    
     bool isEmpty() const
     {
         return m_num == 0;
@@ -210,11 +211,11 @@ private:
     int m_num{};
 };
 
-class Field
+class Board
 {
 public:
 
-    Field() = default;
+    Board() = default;
 
     static void printEmptyLines(int count)
     {
@@ -222,10 +223,10 @@ public:
             std::cout << '\n';
     }
 
-    friend std::ostream& operator<<(std::ostream& stream, const Field& field)
+    friend std::ostream& operator<<(std::ostream& stream, const Board &board)
     {
         // Before drawing always print some empty lines
-        // so that only one field appears at a time
+        // so that only one board appears at a time
         // and it's always shown at the bottom of the window
         // because console window scrolls automatically when there is no
         // enough space. 
@@ -234,7 +235,7 @@ public:
         for (int y = 0; y < SIZE; ++y)
         {
             for (int x = 0; x < SIZE; ++x)
-                stream << field.m_tiles[y][x];
+                stream << board.m_tiles[y][x];
             stream << '\n';
         }
 
@@ -242,7 +243,7 @@ public:
     }
 
 private:
-    static const int SIZE = 4;
+    static constexpr int SIZE = 4;
     Tile m_tiles[SIZE][SIZE]{
         Tile{ 1 }, Tile { 2 }, Tile { 3 } , Tile { 4 },
         Tile { 5 } , Tile { 6 }, Tile { 7 }, Tile { 8 },
