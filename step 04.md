@@ -1,4 +1,4 @@
-D) Goal: Allow the user to repeatedly input commands by creating namespace `UserInput`. It will help us to process the user input and to slide the puzzle Tiles around in the next step.
+D) Goal: In this step, we'll allow the user to repeatedly input game commands, handle invalid input, and implement the quit game command.
 
 These are the 5 commands our game will support (each of which will be input as a single character):
 * 'w' - slide tile up
@@ -7,19 +7,23 @@ These are the 5 commands our game will support (each of which will be input as a
 * 'd' - slide tile right
 * 'q' - quit game
 
-Right now, for commands `w, a, s, d` print `"Valid command: "` and the character the user input. For command `q` print `"\n\nBye!\n\n"` and quit the app
+When the user runs the game, the following should occur:
+* The (solved) board should be printed to the console.
+* The program should repeatedly get valid game commands from the user.  If the user enters an invalid command or extraneous input, ignore it.
+
+For each valid game command:
+* Print `"Valid command: "` and the character the user input.
+* If the command is the quit command, also print `"\n\nBye!\n\n"` and then quit the app.
+
+Because our user input routines do not need to maintain any state, implement them inside a namespace named 'UserInput`.
 
 [tasks]
-
 Implement the `UserInput` namespace:
 * Create a function named `getCommandFromUser()`.  Read in a single character from the user.  If the character is not a valid game command, clear any additional extraneous input, and read in another character from the user.  Repeat until a valid game command is entered.  Return the valid command to the caller.  
 * Create as many helper functions as you need.
 
-Update the `main()` function from the prior example, so that it does the following:
-* Prints the solved field
-* Repeatedly accepts game commands
-* If the user inputs `q`, print `"\n\nBye!\n\n"` and quit the app.
-* If the user inputs any other valid game command, print `"Valid command: "` and the character the user input.
+In main():
+* Implement an infinite loop.  Inside the loop, fetch a valid game command, and then handle the commands per the above requirements.
 
 [/solution]
 
@@ -79,7 +83,7 @@ Bye!
 #include <iostream>
 #include <numeric>
 
-// Increase amount of new lines if your field isn't
+// Increase amount of new lines if your board isn't
 // at the very bottom of the console
 constexpr int g_consoleLines{ 25 };
 
@@ -137,6 +141,7 @@ public:
             stream << "    ";
         return stream;
     }
+    
     bool isEmpty() const
     {
         return m_num == 0;
@@ -148,11 +153,11 @@ private:
     int m_num{};
 };
 
-class Field
+class Board
 {
 public:
 
-    Field() = default;
+    Board() = default;
 
     static void printEmptyLines(int count)
     {
@@ -160,10 +165,10 @@ public:
             std::cout << '\n';
     }
 
-    friend std::ostream& operator<<(std::ostream& stream, const Field& field)
+    friend std::ostream& operator<<(std::ostream& stream, const Board &board)
     {
         // Before drawing always print some empty lines
-        // so that only one field appears at a time
+        // so that only one board appears at a time
         // and it's always shown at the bottom of the window
         // because console window scrolls automatically when there is no
         // enough space. 
@@ -172,7 +177,7 @@ public:
         for (int y = 0; y < SIZE; ++y)
         {
             for (int x = 0; x < SIZE; ++x)
-                stream << field.m_tiles[y][x];
+                stream << board.m_tiles[y][x];
             stream << '\n';
         }
 
@@ -180,8 +185,8 @@ public:
     }
 
 private:
-    static const int SIZE = 4;
-    Tile m_tiles[SIZE][SIZE] {
+    static constexpr int SIZE = 4;
+    Tile m_tiles[SIZE][SIZE]{
         Tile{ 1 }, Tile { 2 }, Tile { 3 } , Tile { 4 },
         Tile { 5 } , Tile { 6 }, Tile { 7 }, Tile { 8 },
         Tile { 9 }, Tile { 10 }, Tile { 11 }, Tile { 12 },
@@ -190,8 +195,8 @@ private:
 
 int main()
 {
-    Field field{};
-    std::cout << field;
+    Board board{};
+    std::cout << board;
 
     while (true)
     {
