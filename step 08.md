@@ -1,4 +1,4 @@
-H) Goal: In this step, we'll finish our game.  To do so, we need to randomize the initial state of the game board so the user has an interesting puzzle to solve, and after each move, detect whether the user has solved the puzzle.
+H) Goal: In this step, we'll finish our game.  Randomize the initial state of the game board so the user has an interesting puzzle to solve, and after each move, detect whether the user has won the game by returning the puzzle to the solved state.
 
 We need to be careful about *how* we randomize our puzzle, because not every puzzle is solvable.  For example, there is no way to solve this puzzle:
 
@@ -9,14 +9,16 @@ We need to be careful about *how* we randomize our puzzle, because not every puz
  13  15  14
  ```
 
-If we just blindly randomize the numbers in the puzzle, there is a chance that we will generate such an unsolvable puzzle.  Instead, think about how we'd randomize a physical version of this puzzle.
+If we just blindly randomize the numbers in the puzzle, there is a chance that we will generate such an unsolvable puzzle.  With a physical version of the puzzle, we'd randomize the puzzle by sliding tiles in random directions until the tiles were sufficiently mixed.  The solution is such a randomized puzzle is to slide each tile in the opposite direction that it was slid to randomize it in the first place.  Thus, randomizing puzzles this way always generates a solvable puzzle.
+
+We can have our program randomize the board in the same way.
 
 Once the user has solved the puzzle, the program should print `"\n\nYou won!\n\n"` and then exit normally.
 
 [tasks]
-* Add a `randomize()` member function to the `Field` class which randomizes the tiles in the game board.  To randomize a physical puzzle, we'd start from the solved puzzle and then slide tiles in random directions until they were all mixed up.  We can mimic this in our program by repeatedly picking a random direction and then sliding a tile in that direction.  Doing this 1000 times should be sufficient to mix up the board, and this method will always generate a solvable puzzle.
-* Implement operator== in `Field` class which will compare if tiles of two given fields are identical.
-* Add `playerWon()` member function to the `Field` class that will return true if the current game board is solved.  You can use the `operator==` you implemented to compare the current game board against a solved game board.  Remember that `Field` objects start in the solved state, so if you need a solved game board, just value initialize a `Field` object!
+* Add a `randomize()` member function to the `Board` class which randomizes the tiles in the game board.  Pick a random direction and if the adjacent point is valid, then slide a tile in that direction.  Doing this 1000 times should be sufficient to mix up the board.
+* Implement operator== in `Board` class which will compare if tiles of two given boards are identical.
+* Add `playerWon()` member function to the `Board` class that will return true if the current game board is solved.  You can use the `operator==` you implemented to compare the current game board against a solved game board.  Remember that `Board` objects start in the solved state, so if you need a solved game board, just value initialize a `Board` object!
 * Update your main() function to integrate randomize() and playerWon().
 
 [/tasks]
@@ -32,7 +34,7 @@ Here is the full solution for our 15 puzzle game:
 #include <numeric>
 #include "Random.h"
 
-// Increase amount of new lines if your field isn't
+// Increase amount of new lines if your board isn't
 // at the very bottom of the console
 constexpr int g_consoleLines{ 25 };
 
@@ -201,11 +203,11 @@ private:
     int m_num{};
 };
 
-class Field
+class Board
 {
 public:
 
-    Field() = default;
+    Board() = default;
 
     static void printEmptyLines(int count)
     {
@@ -213,10 +215,10 @@ public:
             std::cout << '\n';
     }
 
-    friend std::ostream& operator<<(std::ostream& stream, const Field& field)
+    friend std::ostream& operator<<(std::ostream& stream, const Board& board)
     {
         // Before drawing always print some empty lines
-        // so that only one field appears at a time
+        // so that only one board appears at a time
         // and it's always shown at the bottom of the window
         // because console window scrolls automatically when there is no
         // enough space. 
@@ -225,7 +227,7 @@ public:
         for (int y = 0; y < SIZE; ++y)
         {
             for (int x = 0; x < SIZE; ++x)
-                stream << field.m_tiles[y][x];
+                stream << board.m_tiles[y][x];
             stream << '\n';
         }
 
@@ -239,7 +241,7 @@ public:
                 if (m_tiles[y][x].isEmpty())
                     return { x,y };
 
-        assert(0 && "There is no empty tile in the field!!!");
+        assert(0 && "There is no empty tile in the board!!!");
         return { -1,-1 };
     }
 
@@ -254,8 +256,8 @@ public:
         std::swap(m_tiles[pt1.y][pt1.x], m_tiles[pt2.y][pt2.x]);
     }
 
-    // Compare two fields to see if they are equal
-    friend bool operator==(const Field& f1, const Field& f2)
+    // Compare two boards to see if they are equal
+    friend bool operator==(const Board& f1, const Board& f2)
     {
         for (int y = 0; y < SIZE; ++y)
             for (int x = 0; x < SIZE; ++x)
@@ -280,8 +282,8 @@ public:
 
     bool playerWon() const
     {
-        static Field s_solved{};  // generate a solved field
-        return s_solved == *this; // player wins if current field == solved field
+        static Board s_solved{};  // generate a solved board
+        return s_solved == *this; // player wins if current board == solved board
     }
 
     void randomize()
@@ -312,11 +314,11 @@ private:
 
 int main()
 {
-    Field field{};
-    field.randomize();
-    std::cout << field;
+    Board board{};
+    board.randomize();
+    std::cout << board;
 
-    while (!field.playerWon())
+    while (!board.playerWon())
     {
         char ch{ UserInput::getCommandFromUser() };
 
@@ -330,9 +332,9 @@ int main()
         // Handle direction commands
         Direction dir{ UserInput::charToDirection(ch) };
 
-        bool userMoved { field.moveTile(dir) };
+        bool userMoved { board.moveTile(dir) };
         if (userMoved)
-            std::cout << field;
+            std::cout << board;
     }
 
     std::cout << "\n\nYou won!\n\n";
