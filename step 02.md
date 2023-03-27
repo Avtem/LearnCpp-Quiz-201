@@ -1,6 +1,9 @@
-B) Goal: First we will start by showing individual tiles on the screen.
+B) Goal: Be able to display individual tiles on the screen.
 
-Every tile in our program will be an object of a class that we will call `Tile`. Each `Tile` will represent either one of the numbered tiles on our 4x4 grid, or the missing tile. This class should be able to do three things: store the number it holds, being able to tell whether the tile is a missing tile and draw the tile on the screen with appropriate spacing, so that following tile won't stick to the previous one.
+Our game board is a 4x4 grid of tiles that can slide around.  Therfore, it will be useful to have a `Tile` class that represents one of the numbered tiles on our 4x4 grid or the missing tile.  Each tile should be able to:
+* Be given a number or be set as the missing tile
+* Determine whether it is the missing tile.
+* Draw to the console with the appropriate spacing (so the tiles will line up when the board is displayed).  See the sample output below for an example indicating how tiles should be spaced.
 
 [tasks]
 Our `Tile` class should have this functionality:
@@ -64,6 +67,7 @@ public:
             stream << "    ";
         return stream;
     }
+    
     bool isEmpty() const
     {
         return m_num == 0;
