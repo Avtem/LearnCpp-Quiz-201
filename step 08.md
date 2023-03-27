@@ -1,4 +1,4 @@
-H) Goal: In this step, we'll finish our game.  Randomize the initial state of the game board so the user has an interesting puzzle to solve, and after each move, detect whether the user has won the game by returning the puzzle to the solved state.
+H) Goal: In this step, we'll finish our game. Randomize the initial state of the game board. Also, detect when user wins, so after that we can print a win message and quit the game.
 
 We need to be careful about *how* we randomize our puzzle, because not every puzzle is solvable.  For example, there is no way to solve this puzzle:
 
