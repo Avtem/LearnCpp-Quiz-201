@@ -28,6 +28,13 @@ The goal of the game is to slide tiles around until they are in numerical order,
 
 You can play a few rounds [on this site](https://15puzzle.netlify.app/). It will help you to understand how this game works and how it should be implemented.
 
+In our version of the game, each turn the user will enter a single letter command.  There are 5 valid commands:
+* w - slide tile up
+* a - slide tile left
+* s - slide tile down
+* d - slide tile right
+* q - quit game
+
 Because this is going to be a longer program, we'll develop it in stages.
 
 One more thing: at each step, we'll present two things: a *goal* and *tasks*.  The goal defines the outcome that the step is trying to achieve, along with any additional relevant information.  The tasks provide detail and hints about how to implement the goal.
