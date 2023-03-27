@@ -1,11 +1,12 @@
-E) Goal: Implement a helper class named `Direction`, which will allow us to create objects that represent the cardinal directions (up, left, down, or right). `operator-` should return the opposite direction, `operator<<` should print the direction to the console. Also we will need a member function that will return a random Direction object. Lastly, add a function to namespace `UserInput` that converts a character to a Direction object.
+E) Goal: Implement a helper class that will make it easier for us to handle directional commands.
+
+After implementing the prior step, we can accept commands from the user (as characters 'w', 'a', 's', 'd', and 'q').  These characters are essentially magic numbers in our code.  While it's fine to handle these commands in our `UserInput` namespace and function `main()`, we don't want to propagate them throughout our whole program.  For example, the `Board` class should have no knowledge of what 's' means.
+
+Implement a helper class named `Direction`, which will allow us to create objects that represent the cardinal directions (up, left, down, or right).  `operator-` should return the opposite direction, and `operator<<` should print the direction to the console.  We will also need a member function that will return a Direction object containing a random direction. Lastly, add a function to namespace `UserInput` that converts a directional game command ('w', 'a', 's', or 'd') to a Direction object.
+
+The more we can use `Direction` instead of directional game commands, the easier our code will be to read and understand.
 
 [tasks]
-
-After implementing the prior step, we can accept commands from the user (as characters 'w', 'a', 's', 'd', and 'q').  These characters are essentially magic numbers in our code.  While it's fine to handle these commands in our `UserInput` namespace and function `main()`, we don't want to propagate them throughout our whole program.  For example, the `Field` class should have no knowledge of what 's' means.
-
-Instead, we're going to implement a helper class named `Direction`, which will allow us to create objects that represent the cardinal directions (up, left, down, or right).  The more we can use `Direction` instead of directional commands (e.g. 's'), the easier our code will be to read and understand.
-
 Implement the class `Direction`, which has:
 * A public nested enum named `Type` with enumerators `up`, `down`, `left`, `right`, and `max_directions`.
 * A private member that stores the actual direction.
@@ -15,7 +16,7 @@ Implement the class `Direction`, which has:
 * A static function that returns a Direction with a randomized `Type`.  You can use the `Random::get()` function from the ["Random.h"](https://www.learncpp.com/cpp-tutorial/generating-random-numbers-using-mersenne-twister/#RandomH) header to generate a random number.
 
 Also, in the `UserInput` namespace, add the following:
-* A function that will convert a directional command (character) to a Direction object.
+* A function that will convert a directional game command (character) to a Direction object.
 
 [/tasks]
 
@@ -79,7 +80,7 @@ Bye!
 #include <numeric>
 #include "Random.h"
 
-// Increase amount of new lines if your field isn't
+// Increase amount of new lines if your board isn't
 // at the very bottom of the console
 constexpr int g_consoleLines{ 25 };
 
@@ -209,6 +210,7 @@ public:
             stream << "    ";
         return stream;
     }
+    
     bool isEmpty() const
     {
         return m_num == 0;
@@ -220,11 +222,11 @@ private:
     int m_num{};
 };
 
-class Field
+class Board
 {
 public:
 
-    Field() = default;
+    Board() = default;
 
     static void printEmptyLines(int count)
     {
@@ -232,10 +234,10 @@ public:
             std::cout << '\n';
     }
 
-    friend std::ostream& operator<<(std::ostream& stream, const Field& field)
+    friend std::ostream& operator<<(std::ostream& stream, const Board &board)
     {
         // Before drawing always print some empty lines
-        // so that only one field appears at a time
+        // so that only one board appears at a time
         // and it's always shown at the bottom of the window
         // because console window scrolls automatically when there is no
         // enough space. 
@@ -244,7 +246,7 @@ public:
         for (int y = 0; y < SIZE; ++y)
         {
             for (int x = 0; x < SIZE; ++x)
-                stream << field.m_tiles[y][x];
+                stream << board.m_tiles[y][x];
             stream << '\n';
         }
 
@@ -252,7 +254,7 @@ public:
     }
 
 private:
-    static const int SIZE = 4;
+    static constexpr int SIZE = 4;
     Tile m_tiles[SIZE][SIZE]{
         Tile{ 1 }, Tile { 2 }, Tile { 3 } , Tile { 4 },
         Tile { 5 } , Tile { 6 }, Tile { 7 }, Tile { 8 },
@@ -262,8 +264,8 @@ private:
 
 int main()
 {
-    Field field{};
-    std::cout << field;
+    Board board{};
+    std::cout << board;
 
     std::cout << "Generating random direction... " << Direction::getRandomDirection() << '\n';
     std::cout << "Generating random direction... " << Direction::getRandomDirection() << '\n';
