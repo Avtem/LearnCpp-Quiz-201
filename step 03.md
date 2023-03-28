@@ -14,7 +14,7 @@ The `Board` class should have the following functionality:
 
 The following program should run:
 ```cpp
-// Increase amount of new lines if your field isn't
+// Increase amount of new lines if your board isn't
 // at the very bottom of the console
 constexpr int g_consoleLines{ 25 };
 
@@ -22,8 +22,8 @@ constexpr int g_consoleLines{ 25 };
 
 int main()
 {
-    Field field{};
-    std::cout << field;
+    Board board{};
+    std::cout << board;
 
     return 0;
 }
@@ -66,7 +66,7 @@ and output the following:
 ```cpp
 #include <iostream>
 
-// Increase amount of new lines if your field isn't
+// Increase amount of new lines if your board isn't
 // at the very bottom of the console
 constexpr int g_consoleLines{ 25 };
 
@@ -116,7 +116,7 @@ public:
     friend std::ostream& operator<<(std::ostream& stream, const Board &board)
     {
         // Before drawing always print some empty lines
-        // so that only one field appears at a time
+        // so that only one board appears at a time
         // and it's always shown at the bottom of the window
         // because console window scrolls automatically when there is no
         // enough space. 
