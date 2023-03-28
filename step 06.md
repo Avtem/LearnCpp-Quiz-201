@@ -6,18 +6,21 @@ Since we'll be working with coordinates a lot, create a helper class named `Poin
 
 [tasks]
 Implement a struct named `Point`.  This should contain:
-* Two data members to store the x-axis and y-axis coordinates.
+* Two public data members to store the x-axis and y-axis coordinates.
 * An overloaded `operator==` and `operator!=` to compare two sets of coordinates.
 * A const member function `Point getAdjacentPoint(Direction)` that returns the Point in the direction of the Direction parameter.  We do not need to do any validity checking here.
 
 We're using a struct instead of a class here because Point is simple bundle of data that would benefit little from being encapsulated.
 [/tasks]
 
-The following code should run and print “true” for every test-case:
+Save your `main()` function from the prior step, as you'll need it again in the next step.
+
+The following code should run and print `true` for every test-case:
 
 ```cpp
 // Your code goes here
 
+// Note: save your main() from the prior step, as you'll need it again in the next step
 int main()
 {
     std::cout << std::boolalpha;
