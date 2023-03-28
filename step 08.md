@@ -9,7 +9,7 @@ We need to be careful about *how* we randomize our puzzle, because not every puz
  13  15  14
  ```
 
-If we just blindly randomize the numbers in the puzzle, there is a chance that we will generate such an unsolvable puzzle.  With a physical version of the puzzle, we'd randomize the puzzle by sliding tiles in random directions until the tiles were sufficiently mixed.  The solution is such a randomized puzzle is to slide each tile in the opposite direction that it was slid to randomize it in the first place.  Thus, randomizing puzzles this way always generates a solvable puzzle.
+If we just blindly randomize the numbers in the puzzle, there is a chance that we will generate such an unsolvable puzzle.  With a physical version of the puzzle, we'd randomize the puzzle by sliding tiles in random directions until the tiles were sufficiently mixed.  The solution for such a randomized puzzle is to slide each tile in the opposite direction that it was slid to randomize it in the first place.  Thus, randomizing puzzles this way always generates a solvable puzzle.
 
 We can have our program randomize the board in the same way.
 
