@@ -154,13 +154,6 @@ namespace UserInput
             || ch == 'd'
             || ch == 'q';
     }
-    bool isValidDirection(char ch)
-    {
-        return ch == 'w'
-            || ch == 'a'
-            || ch == 's'
-            || ch == 'd';
-    }
 
     void ignoreLine()
     {
