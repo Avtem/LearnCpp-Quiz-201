@@ -174,20 +174,11 @@ private:
     int m_num{};
 };
 
-template <int size>
 class Field
 {
 public:
 
-    Field(bool printEmptyLines_)
-        :PRINT_EMPTY_LINES(printEmptyLines_)
-    {
-        for (int y = 0, i = 1; y < SIZE; ++y)
-            for (int x = 0; x < SIZE; ++x, ++i)
-                m_tiles[y][x] = Tile(i);
-
-        m_tiles[SIZE -1][SIZE -1] = Tile(0); // the missing tile must be the last one
-    }
+    Field() = default;
 
     static void printEmptyLines(int count)
     {
@@ -202,8 +193,7 @@ public:
         // and it's always shown at the bottom of the window
         // because console window scrolls automatically when there is no
         // enough space. 
-        if(field.PRINT_EMPTY_LINES)
-            printEmptyLines(g_consoleLines);
+        printEmptyLines(g_consoleLines);
 
         for (int y = 0; y < SIZE; ++y)
         {
@@ -263,7 +253,7 @@ public:
 
     bool playerWon() const
     {
-        static Field s_solved{false};  // generate a solved field
+        static Field s_solved{};  // generate a solved field
         return s_solved == *this; // player wins if current field == solved field
     }
 
@@ -271,7 +261,7 @@ public:
     {
         // just move empty tile randomly 1000 times
         // (just like you would do in real life)
-        for (int i = 0; i < 666; ++i)
+        for (int i = 0; i < 1000; ++i)
         {
             Point pt0tile{ getEmptyTilePos() };
             Point ptAdj{};
@@ -285,20 +275,21 @@ public:
     }
 
 private:
-    static const int SIZE = size;
-    const bool PRINT_EMPTY_LINES{true};
-    Tile m_tiles[SIZE][SIZE];
+    static const int SIZE = 4;
+    Tile m_tiles[SIZE][SIZE]{
+        Tile{ 1 }, Tile { 2 }, Tile { 3 } , Tile { 4 },
+        Tile { 5 } , Tile { 6 }, Tile { 7 }, Tile { 8 },
+        Tile { 9 }, Tile { 10 }, Tile { 11 }, Tile { 12 },
+        Tile { 13 }, Tile { 14 }, Tile { 15 }, Tile { 0 } };
 };
 
 int main()
 {
-    Field<4> field{true};
-    Field<2> field2{false};
+    Field field{};
     field.randomize();
-    field2.randomize();
-    std::cout << field << "--------------------\n" << field2;
+    std::cout << field;
 
-    while (!field.playerWon() || !field2.playerWon())
+    while (!field.playerWon())
     {
         char ch{ UserInput::getCommandFromUser() };
 
@@ -312,10 +303,9 @@ int main()
         // Handle direction commands
         Direction dir{ UserInput::charToDirection(ch) };
 
-        field.moveTile(dir);
-        field2.moveTile(dir);
-        
-        std::cout << field << "--------------------\n" << field2;
+        bool userMoved{ field.moveTile(dir) };
+        if (userMoved)
+            std::cout << field;
     }
 
     std::cout << "\n\nYou won!\n\n";
