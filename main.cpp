@@ -174,11 +174,19 @@ private:
     int m_num{};
 };
 
+template <int size>
 class Field
 {
 public:
 
-    Field() = default;
+    Field()
+    {
+        for (int y = 0, i = 1; y < SIZE; ++y)
+            for (int x = 0; x < SIZE; ++x, ++i)
+                m_tiles[y][x] = Tile(i);
+
+        m_tiles[SIZE -1][SIZE -1] = Tile(0); // the missing tile must be the last one
+    }
 
     static void printEmptyLines(int count)
     {
@@ -275,19 +283,17 @@ public:
     }
 
 private:
-    static const int SIZE = 4;
-    Tile m_tiles[SIZE][SIZE]{
-        Tile{ 1 }, Tile { 2 }, Tile { 3 } , Tile { 4 },
-        Tile { 5 } , Tile { 6 }, Tile { 7 }, Tile { 8 },
-        Tile { 9 }, Tile { 10 }, Tile { 11 }, Tile { 12 },
-        Tile { 13 }, Tile { 14 }, Tile { 15 }, Tile { 0 } };
+    static const int SIZE = size;
+    Tile m_tiles[SIZE][SIZE];
 };
 
 int main()
 {
-    Field field{};
+    Field<10> field{};
+    Field<2> field2{};
     field.randomize();
     std::cout << field;
+    std::cout << field2;
 
     while (!field.playerWon())
     {
